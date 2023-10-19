@@ -1,0 +1,34 @@
+
+.banner {
+    height: 400px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    &__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    &__promoted {
+        position: absolute;
+        top: 50%;
+        right: 50px;
+        transform: translate(0, -50%);
+        width: 400px;
+        height: 250px;
+        // @media screen (max-width: 920px)) {
+            
+        // }
+        padding: 28px 30px;
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: baseline;
+        &__text {
+            font-size: 1.2em;
+            text-align: left;
+        }
+    }
+
+}

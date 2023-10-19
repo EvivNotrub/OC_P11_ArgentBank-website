@@ -1,0 +1,47 @@
+
+.error__main {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #FF6060;
+    gap: 50px;
+    text-align: center;
+    &__title {
+        font-size: calc((1vh + 1vw + 0.5vmin)*7);
+        margin: 0;
+    }
+    &__message {
+        font-size: 30px;
+        margin: 0 10px;
+        @media (max-width: 800px) {
+            font-size: 20px;
+        }
+    }
+    &__lien {
+        font-size: 20px;
+        transition: opacity 0.2s cubic-bezier(0.71, 0.05, 0.25, 0.87) 0.05s;
+        margin: 0 20px;
+        &:hover {
+            text-decoration: underline;
+            color: #ff6060d1;
+            animation: shake-it 0.05s alternate 4;
+        }
+        @media (max-width: 800px) {
+            font-size: 16px;
+        }
+    }
+}
+
+@keyframes shake-it {
+    from {
+      transform: translate(0%, 0%);
+      animation-timing-function: cubic-bezier(0.56, 0.05, 0.49, 0.6);
+    }
+    to {
+      transform: translate(0.3%, 1.2%);
+      animation-timing-function: cubic-bezier(0.4, 0.56, 1, 0.57);
+    }
+  }
