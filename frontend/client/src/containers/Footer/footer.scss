@@ -1,0 +1,10 @@
+
+.footer {
+    display: flex;
+    justify-content: center;
+    padding: 32px 0 24px 0;
+    border-top: solid 2px var(--secondary, grey);
+    &__copyright {
+        font-size: 1em;
+    }
+}
