@@ -1,8 +1,7 @@
 
 
-// store.js
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './userSlice'; // Create this later
+import userReducer from './userSlice';
 
 const store = configureStore({
   reducer: {
@@ -11,11 +10,3 @@ const store = configureStore({
 });
 
 export default store;
-
-
-// const store = () => {
-//     return {
-//         type: 'STORE',
-//     };
-// }
-// export default store;

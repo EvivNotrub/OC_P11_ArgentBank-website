@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
-// import { useSelector, useDispatch } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setAuthorized } from '../../Redux/userSlice'; 
 import './buttons.scss'
 
 function Button({...props}){
-    // const isAuthorized = useSelector((state) => state.user.isAuthorized);
     const dispatch = useDispatch();
 
     const handleClick = () => {
@@ -15,7 +13,6 @@ function Button({...props}){
         if(props.stateChange === 'log-in'){
             dispatch(setAuthorized(true));
         }
-
     }
 
     return(
