@@ -6,7 +6,7 @@ import Navigation from '../Navigation/Navigation';
 
 
 
-function Header({...props}) {
+function Header() {
 
     return (
         <header className="header">
@@ -15,7 +15,7 @@ function Header({...props}) {
                 <h1 aria-hidden="true" className='header__logo__title'>Argent Bank</h1>
             </Link>
             <nav className='header__nav'>
-                <Navigation {...props}/>
+                <Navigation/>
             </nav>
         </header>
     )

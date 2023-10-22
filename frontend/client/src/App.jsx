@@ -7,8 +7,11 @@ import Home from './pages/Home/Home.jsx';
 import Header from './containers/Header/Header.jsx';
 import Footer from './containers/Footer/Footer.jsx';
 import './App.scss';
+import { useDispatch } from 'react-redux';
+import { setUser } from './Redux/userSlice.js';
 
 function App() {
+  const dispatch = useDispatch();
 
   const data = {
     userName: 'Bob Denard',
@@ -27,6 +30,8 @@ function App() {
       }
     ]
   }
+
+  dispatch(setUser(data.userName))
 
   return (
     <Router>
