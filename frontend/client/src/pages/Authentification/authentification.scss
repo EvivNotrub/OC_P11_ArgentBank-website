@@ -1,0 +1,28 @@
+
+.log-in-main {
+    background-color: var(--background-dark, black);
+    height: calc(98vh - (64px + 82px));
+    padding-top: 48px;
+}
+
+.log-in {
+    background-color: var(--background, white);
+    width: 300px;
+    margin: 0 auto;
+    padding: 32px;
+    &__heading {
+        &__title {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+    }
+    &__form{
+        margin-top: 19px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        &__remember {
+            margin-right: 8px;
+        }
+    }
+}
