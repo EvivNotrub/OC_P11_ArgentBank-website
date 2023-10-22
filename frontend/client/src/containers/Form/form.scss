@@ -1,16 +1,6 @@
 
-.log-in {
-    background-color: var(--background, white);
-    width: 300px;
-    margin: 0 auto;
-    padding: 32px;
-    &__heading {
-        &__title {
-            font-size: 24px;
-            margin-top: 10px;
-        }
-    }
-    &__form{
+
+    .form{
         margin-top: 19px;
         display: flex;
         flex-direction: column;
@@ -19,4 +9,3 @@
             margin-right: 8px;
         }
     }
-}
