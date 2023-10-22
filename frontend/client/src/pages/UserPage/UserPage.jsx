@@ -1,13 +1,13 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux'; 
 import Button from '../../components/buttons/buttons';
 import './userPage.scss'
 
 
-function UserPage({isAuthorized}) {
-    console.log('isAUthori',isAuthorized);
+function UserPage() {
+    const isAuthorized = useSelector((state) => state.user.isAuthorized);
     const [someState, setSomeState] = useState(false);
     console.log('someState',someState);
 
@@ -44,7 +44,4 @@ function UserPage({isAuthorized}) {
     }
 }
 
-UserPage.propTypes = {
-    isAuthorized: PropTypes.bool,
-}
 export default UserPage;

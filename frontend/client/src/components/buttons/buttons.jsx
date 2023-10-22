@@ -1,15 +1,19 @@
 import PropTypes from 'prop-types';
+// import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setAuthorized } from '../../Redux/userSlice'; 
 import './buttons.scss'
 
 function Button({...props}){
+    // const isAuthorized = useSelector((state) => state.user.isAuthorized);
+    const dispatch = useDispatch();
 
-
-    const handleClick = (e) => {
-        if(props.setIsAuthorized){
-            props.setIsAuthorized(true)
-        }
+    const handleClick = () => {
         if(props.handleAction){
             props.handleAction(true)
+        }
+        if(props.stateChange === 'log-in'){
+            dispatch(setAuthorized(true));
         }
 
     }
@@ -18,7 +22,7 @@ function Button({...props}){
         <button
             onClick={(e) => {
                 e.preventDefault();
-                handleClick(e)
+                handleClick()
             }}
             className={props.className}
             form={props.form?props.form:''}
@@ -29,11 +33,11 @@ function Button({...props}){
     )
 }
 Button.propTypes = {
+    stateChange: PropTypes.string,
     form: PropTypes.string,
     type: PropTypes.string,
     className: PropTypes.string,
     textContent: PropTypes.string,
-    setIsAuthorized: PropTypes.func,
     handleAction: PropTypes.func,
 }
 

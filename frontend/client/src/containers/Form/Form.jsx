@@ -1,10 +1,8 @@
 import Field from '../../components/Field/field';
 import Button from '../../components/buttons/buttons';
 import './form.scss'
-import PropTypes from 'prop-types';
 
-
-function Form({setIsAuthorized}) {
+function Form() {
 
         return (
                 <section className='log-in'>
@@ -20,17 +18,14 @@ function Form({setIsAuthorized}) {
                         <Field inputClass='input' labelClass='label bold' labelText='Password' type= 'password' inputName= 'password'/>
                         <Field inputClass='log-in__form__remember' labelClass='label checkbox' labelTextAfter='Remember me' type='checkbox' id='rememberMe' inputName= 'rememberMe'/>
                         <Button
-                            setIsAuthorized={setIsAuthorized}
+                            stateChange='log-in'
                             className='log-in__form__submit button'
-                            type='submit' form='log-in-form'
+                            type='submit'
+                            form='log-in-form'
                             textContent='Sign In'/>
                     </form>
                 </section>
         )
-}
-
-Form.propTypes = {
-    setIsAuthorized: PropTypes.func,
 }
 
 export default Form;

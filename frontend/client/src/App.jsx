@@ -1,5 +1,4 @@
 
-import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Error from './pages/Error/Error.jsx';
 import UserPage from './pages/UserPage/UserPage.jsx';
@@ -10,8 +9,6 @@ import Footer from './containers/Footer/Footer.jsx';
 import './App.scss';
 
 function App() {
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  console.log('isAuth in app jsx', isAuthorized);
 
   const data = {
     userName: 'Bob Denard',
@@ -33,14 +30,13 @@ function App() {
 
   return (
     <Router>
-      <Header user={data.userName} isAuthorized={isAuthorized} setIsAuthorized={setIsAuthorized}/>
+      <Header user={data.userName}/>
       <Routes>
           <Route path="/" element={<Home />} />
           <Route path="*" element={<Error />} />
-          <Route path="/userpage" element={<UserPage isAuthorized={isAuthorized} setIsAuthorized={setIsAuthorized} />} />
-          <Route path="/authentification" element={<Authentification isAuthorized={isAuthorized} setIsAuthorized={setIsAuthorized} />} />
-          {/* <Route path="/about" element={<About />} />
-          <Route path="/apartment/:apartId" element={<Apartment />}  /> */}
+          <Route path="/userpage" element={<UserPage />} />
+          <Route path="/authentification" element={<Authentification />} />
+          {/*<Route path="/apartment/:apartId" element={<Apartment />}  /> */}
       </Routes>
       <Footer/>
     </Router>

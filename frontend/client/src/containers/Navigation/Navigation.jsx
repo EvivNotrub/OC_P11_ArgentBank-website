@@ -3,13 +3,18 @@
 import './navigation.scss';
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { setAuthorized } from '../../Redux/userSlice'; // Import your action
 
-function Navigation({user, isAuthorized, setIsAuthorized}) {
+
+function Navigation({user}) {
+    const isAuthorized = useSelector((state) => state.user.isAuthorized);
+    const dispatch = useDispatch();
 
     function handleClick(e) {
         if(isAuthorized){
             e.preventDefault();
-            setIsAuthorized(false)
+            dispatch(setAuthorized(false))
         }
     }
 
@@ -48,8 +53,6 @@ function Navigation({user, isAuthorized, setIsAuthorized}) {
 
 Navigation.propTypes = {
     user: PropTypes.string,
-    isAuthorized: PropTypes.bool,
-    setIsAuthorized: PropTypes.func,
 }
 
 export default Navigation
