@@ -42,7 +42,10 @@
             & svg {
                 height: 20px;
                 width: 20px;
-            }          
+            }      
+            & .--log-out {
+                gap: 5px;
+            }    
         }
     }
 }

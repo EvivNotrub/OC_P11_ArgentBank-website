@@ -1,22 +1,12 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import './authentification.scss'
-
 import Field from '../../components/Field/field';
 import Button from '../../components/buttons/buttons';
+import './form.scss'
+import PropTypes from 'prop-types';
 
-function Authentification({isAuthorized, setIsAuthorized}) {
-        const navigate = useNavigate();
 
-        useEffect(() => {
-            if(isAuthorized){
-                navigate('/userpage', { replace: true });
-            }
-        }, [isAuthorized, navigate])
+function Form({setIsAuthorized}) {
 
         return (
-            <main className="log-in-main">
                 <section className='log-in'>
                     <div className='log-in__heading'>
                         <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
@@ -36,13 +26,11 @@ function Authentification({isAuthorized, setIsAuthorized}) {
                             textContent='Sign In'/>
                     </form>
                 </section>
-            </main>
         )
 }
 
-Authentification.propTypes = {
-    isAuthorized: PropTypes.bool,
+Form.propTypes = {
     setIsAuthorized: PropTypes.func,
 }
 
-export default Authentification;
+export default Form;
