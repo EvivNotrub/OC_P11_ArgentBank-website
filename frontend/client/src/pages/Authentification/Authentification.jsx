@@ -2,16 +2,14 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './authentification.scss'
 import { useSelector } from 'react-redux';
-import Form from '../../containers/Form/Form';
+import LogInForm from '../../containers/Forms/LogInForm';
 
 function Authentification() {
         const isAuthorized = useSelector((state) => state.user.isAuthorized);
-        console.log(isAuthorized);
-
         const navigate = useNavigate();
 
         useEffect(() => {
-            if(isAuthorized){ // === true ??
+            if(isAuthorized === true){
                 navigate('/userpage', { replace: true });
             }
         }, [isAuthorized, navigate])
@@ -26,7 +24,7 @@ function Authentification() {
                         </svg>
                         <h2 className='log-in__heading__title'>Sign In</h2>
                     </div>
-                    <Form />
+                    <LogInForm />
                 </section>
             </main>
         )

@@ -2,17 +2,27 @@ import PropTypes from 'prop-types';
 import './field.scss';
 
 function Field({...props}) {
+    const setInputValue = props.setValue;
 
     return(
         <label className={props.labelClass}>
             {props.labelText}
-            <input className={props.inputClass} id={props.id} name={props.inputName} type={props.type} />
+            <input
+                onChange={(e) => setInputValue(e.target.value)}
+                className={props.inputClass}
+                id={props.id}
+                name={props.inputName}
+                type={props.type}
+                value={props.value}
+            />
             {props.labelTextAfter}
         </label>
     )
 }
 
 Field.propTypes = {
+        setValue: PropTypes.func,
+        value: PropTypes.string,
         labelClass: PropTypes.string,
         inputClass: PropTypes.string,
         labelText: PropTypes.string,

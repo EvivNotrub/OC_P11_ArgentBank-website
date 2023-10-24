@@ -18,18 +18,18 @@ function UserPage() {
         if(!isAuthorized){
             setTimeout(() => {
                 navigate('/authentification', { replace: true });
-            }, 3000)
+            }, 2000)
         }
     }, [isAuthorized, navigate])
 
     if(!isAuthorized) {
         return (
             <main className="user-main">
-                <h2 className='user-main__alert'>Restricted access :-o</h2>
+                <h2 className='user-main__alert'>Restricted access</h2>
                 <p className='user-main__alert'>You will be redirected to log-in page.</p>
             </main>
         )}
-    if(isAuthorized) {
+    if(isAuthorized === true) {
         return (
             <main className="user-main">
                 <div>Hello Bob!</div>
