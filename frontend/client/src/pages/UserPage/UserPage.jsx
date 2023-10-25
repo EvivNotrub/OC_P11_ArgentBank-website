@@ -11,8 +11,8 @@ import './userPage.scss'
 function UserPage() {
     const isAuthorized = useSelector((state) => state.user.isAuthorized);
     const hasToken = useSelector((state) => state.user.hasToken);
-    const userData = useSelector((state) => state.user.userData)
-    const userName = useSelector((state) => state.user.user)
+    const userData = useSelector((state) => state.user.userData);
+    const userName = useSelector((state) => state.user.user);
     const dispatch = useDispatch();
 
 
@@ -52,12 +52,16 @@ function UserPage() {
         console.log("userData : ", userData);
         return (
             <main className="user-main">
-                <div>Hello {userName ? userName : ''}!</div>
+                <div className="user-main__header">
+                    <h2>Welcome back<br/>{userName ? userName : ''} {userData ? userData.lastName : ''}!</h2>
                     <Button
                             // handleAction={() =>  }
                             className='log-in__form__submit button'
                             type='submit' form='log-in-form'
                             textContent='Change State'/>
+                </div>
+                <div>Hello {userName ? userName : ''} {userData ? userData.lastName : ''}!</div>
+
                     {/* {someState &&  <div >Bob</div>} */}
             </main>
         )
