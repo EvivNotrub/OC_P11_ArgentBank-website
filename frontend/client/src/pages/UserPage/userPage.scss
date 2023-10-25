@@ -6,5 +6,27 @@
     &__alert{
         color: white;
     }
+    &__header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        & h2 {
+            color: var(--text-color-dark, white);
+            font-size: 2rem;
+        }
+        & .button {
+            font-size: 0.8333rem;
+            padding: 10px;
+            font-weight: bold;
+            box-shadow: none;
+        }
+        margin-bottom: 32px;
+    }
+    &__accounts {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 32px;
+    }
 }
 

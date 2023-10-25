@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setUserData, setUser } from '../../Redux/userSlice';
 import { getUserProfile } from '../../api/api';
 import Button from '../../components/buttons/buttons';
+import Account from '../../containers/account/Account';
 import './userPage.scss'
 
 
@@ -56,13 +57,12 @@ function UserPage() {
                     <h2>Welcome back<br/>{userName ? userName : ''} {userData ? userData.lastName : ''}!</h2>
                     <Button
                             // handleAction={() =>  }
-                            className='log-in__form__submit button'
-                            type='submit' form='log-in-form'
-                            textContent='Change State'/>
+                            type='button'
+                            textContent='Edit Name'/>
                 </div>
-                <div>Hello {userName ? userName : ''} {userData ? userData.lastName : ''}!</div>
-
-                    {/* {someState &&  <div >Bob</div>} */}
+                <div className="user-main__accounts">
+                    <Account className='user-main__accounts__account' />
+                </div>
             </main>
         )
     }

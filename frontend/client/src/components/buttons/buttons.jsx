@@ -5,7 +5,7 @@ function Button({...props}){
 
     return(
         <button
-            className={props.className}
+            className={'button' + ' ' + props.className}
             form={props.form?props.form:''}
             type={props.type}
         >

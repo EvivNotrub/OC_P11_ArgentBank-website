@@ -1,0 +1,21 @@
+
+
+    .form{
+        margin-top: 19px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        &__remember {
+            margin-right: 8px;
+        }
+        &__submit {
+            width: 100%;
+            border-style: none;
+            text-decoration: underline;
+            box-shadow: 1px 1px 3px var(--primary-dimm, black);
+            &:hover {
+                text-decoration: none;
+                box-shadow: 1.5px 1.5px 4px var(--primary-dimm, black);
+            }
+        }
+    }

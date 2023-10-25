@@ -4,7 +4,7 @@ import { setAuthorized, setValidToken } from '../../Redux/userSlice';
 import { postCredentials } from '../../api/api';
 import Field from '../../components/Field/field';
 import Button from '../../components/buttons/buttons';
-import './login.scss'
+import './loginForm.scss'
 
 function LogInForm() {
     const [mailInput, setMailInput] = useState('Votre e-mail');
@@ -61,7 +61,7 @@ function LogInForm() {
                 <Field setValue={setKeyInput} value={keyInput} inputClass='input' labelClass='label bold' labelText='Password' type= 'password' inputName= 'password'/>
                 <Field inputClass='form__remember' labelClass='label checkbox' labelTextAfter='Remember me' type='checkbox' id='rememberMe' inputName= 'rememberMe'/>
                 <Button
-                    className='form__submit button'
+                    className='form__submit'
                     type='submit'
                     form='log-in-form'
                     textContent='Sign In'/>

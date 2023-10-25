@@ -2,7 +2,6 @@
 
 .button {
     display: block;
-    width: 100%;
     padding: 8px;
     font-size: 1.1rem;
     font-weight: bold;
@@ -11,12 +10,8 @@
     color: #fff;
     cursor: pointer;
     transition: border-color 0.25s;
-    border-style: none;
-    text-decoration: underline;
-    box-shadow: 1px 1px 3px var(--primary-dimm, black);
     &:hover {
-        text-decoration: none;
-        box-shadow: 1.5px 1.5px 4px var(--primary-dimm, black);
+        text-decoration: underline;
         opacity: 0.9;
     }
 }
