@@ -2,7 +2,8 @@
 .user-main {
     background-color: var(--background-dark, black);
     height: calc(98vh - (64px + 82px));
-    padding-top: 48px;
+    padding-bottom: 32px;
+    overflow: auto;
     &__alert{
         color: white;
     }
