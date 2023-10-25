@@ -7,35 +7,12 @@ import Home from './pages/Home/Home.jsx';
 import Header from './containers/Header/Header.jsx';
 import Footer from './containers/Footer/Footer.jsx';
 import './App.scss';
-import { useDispatch } from 'react-redux';
-import { setUser } from './Redux/userSlice.js';
 
 function App() {
-  const dispatch = useDispatch();
-
-  const data = {
-    userName: 'Bob Denard',
-    accounts: [
-      {
-        id: 'asd54f',
-        name: 'savings',
-        amount: '100',
-        currency: '€'
-      },
-      {
-        id: '6s54df',
-        name: 'current',
-        amount: '250',
-        currency: '€'
-      }
-    ]
-  }
-
-  dispatch(setUser(data.userName))
 
   return (
     <Router>
-      <Header user={data.userName}/>
+      <Header />
       <Routes>
           <Route path="/" element={<Home />} />
           <Route path="*" element={<Error />} />

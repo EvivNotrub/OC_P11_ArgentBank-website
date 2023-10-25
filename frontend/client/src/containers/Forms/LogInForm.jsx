@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setAuthorized } from '../../Redux/userSlice';
+import { setAuthorized, setValidToken } from '../../Redux/userSlice';
 import { postCredentials } from '../../api/api';
 import Field from '../../components/Field/field';
 import Button from '../../components/buttons/buttons';
@@ -13,44 +13,47 @@ function LogInForm() {
     const isAuthorized = useSelector((state) => state.user.isAuthorized)
     const dispatch = useDispatch();
 
-
-    const logInAction = async (e) => {        
+// need to check the dependencies of the callback : dispatch??
+    const logInAction = useCallback(
+        async (e) => {        
         
-        e.preventDefault();
+            e.preventDefault();
 
-        const email = mailInput;
-        const key = keyInput;
-        const userInfo = {
-            "email": email,
-            "password": key
-        }
-        const bodyData = JSON.stringify(userInfo)
-
-        setSending(true)
-
-        if(!isAuthorized){
-            try {
-                let response = await postCredentials(bodyData)
-                console.log(response);
-                setSending(false)
-                if(!response.ok){
-                    alert("HTTP-Error: " + response.status + "\n\n" + "Identifiants incorrect");
-                    dispatch(setAuthorized(false))
-                }
-                if(response.status === 200) {
-                    const retourLogin = await response.json();
-                    const token = JSON.stringify(retourLogin.body.token);
-                    window.localStorage.setItem("token", token)
-                    dispatch(setAuthorized(true))
-                }
-            } catch (error) {
-                setSending(false)
-                alert('Erreur lors de la connexion au server.')
-                throw new Error('Could not reach backend', {cause: error});
+            const email = mailInput;
+            const key = keyInput;
+            const userInfo = {
+                "email": email,
+                "password": key
             }
-        }
-    }
-    
+            const bodyData = JSON.stringify(userInfo)
+
+            setSending(true)
+
+            if(!isAuthorized){
+                try {
+                    let response = await postCredentials(bodyData)
+                    setSending(false)
+                    if(!response.ok){
+                        alert("HTTP-Error: " + response.status + "\n\n" + "Identifiants incorrect");
+                        dispatch(setAuthorized(false))
+                    }
+                    if(response.status === 200) {
+                        dispatch(setAuthorized(true))
+                        const retourLogin = await response.json();
+                        const token = JSON.stringify(retourLogin.body.token);
+                        window.localStorage.setItem("token", token)
+                        dispatch(setValidToken(true))
+                    }
+                } catch (error) {
+                    setSending(false)
+                    alert('Erreur lors de la connexion au server.')
+                    throw new Error('Could not reach backend', {cause: error});
+                }
+            }
+        },
+        [dispatch, isAuthorized, keyInput, mailInput]
+    )
+
 
         return (
             <form onSubmit={logInAction} className='form' id='log-in-form'>

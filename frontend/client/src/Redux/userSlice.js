@@ -5,6 +5,8 @@ const userSlice = createSlice({
   initialState: {
     isAuthorized: false,
     user: null,
+    hasToken: false,
+    userData: null,
   },
   reducers: {
     setAuthorized: (state, action) => {
@@ -13,8 +15,14 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
+    setValidToken: (state, action) => {
+      state.hasToken = action.payload;
+    },
+    setUserData: (state, action) => {
+      state.userData = action.payload;
+    }
   },
 });
 
-export const { setAuthorized, setUser } = userSlice.actions;
+export const { setAuthorized, setUser, setValidToken, setUserData } = userSlice.actions;
 export default userSlice.reducer;
