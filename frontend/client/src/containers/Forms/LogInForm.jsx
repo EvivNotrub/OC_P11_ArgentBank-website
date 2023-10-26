@@ -7,7 +7,7 @@ import Button from '../../components/buttons/buttons';
 import './loginForm.scss'
 
 function LogInForm() {
-    const [mailInput, setMailInput] = useState('Votre e-mail');
+    const [mailInput, setMailInput] = useState('');
     const [keyInput, setKeyInput] = useState('')
     const [sending, setSending] = useState(false);
     const isAuthorized = useSelector((state) => state.user.isAuthorized)
@@ -36,6 +36,10 @@ function LogInForm() {
                     if(!response.ok){
                         alert("HTTP-Error: " + response.status + "\n\n" + "Identifiants incorrect");
                         dispatch(setAuthorized(false))
+                    }
+                    const contentType = response.headers.get("content-type")
+                    if(!contentType || !contentType.includes("application/json")){
+                        throw new TypeError("Did not received Json!")
                     }
                     if(response.status === 200) {
                         dispatch(setAuthorized(true))

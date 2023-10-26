@@ -16,6 +16,10 @@ export async function getUserProfile(token) {
             },
       });
       if (!response.ok) throw new Error(`Backend responded with ${response.status} error: ${await response.text()}`);
+      const contentType = response.headers.get("content-type")
+      if(!contentType || !contentType.includes("application/json")){
+        throw new TypeError("Did not received Json!")
+      }
       if(response.ok){
         const responseJson =  await response.json()
         return responseJson
