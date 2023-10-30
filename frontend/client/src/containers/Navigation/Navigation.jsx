@@ -3,23 +3,23 @@
 import './navigation.scss';
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
-import { setAuthorized, setUser, setUserData, setValidToken } from '../../Redux/userSlice';
+import { setUser, setUserData } from '../../Redux/userSlice';
+import { hasTokenAction, isAuthorizedAction } from '../../Redux/authSlice';
 
 
 function Navigation() {
-    const isAuthorized = useSelector((state) => state.user.isAuthorized);
-    const hasToken = useSelector((state) => state.user.hasToken);
+    const isAuthorized = useSelector((state) => state.auth.isAuthorized);
+    const hasToken = useSelector((state) => state.auth.hasToken);
     const userName = useSelector((state) => state.user.user);
     const dispatch = useDispatch();
-
     function logOut(e) {
         e.preventDefault();
         if(isAuthorized){
-            dispatch(setAuthorized(false))
+            dispatch(isAuthorizedAction(false))
         }
         if(hasToken){
             window.localStorage.removeItem("token");
-            dispatch(setValidToken(false))
+            dispatch(hasTokenAction(false))
         }
         dispatch(setUser(null))
         dispatch(setUserData(null))

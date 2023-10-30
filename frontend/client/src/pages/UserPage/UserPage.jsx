@@ -10,8 +10,8 @@ import './userPage.scss'
 
 
 function UserPage() {
-    const isAuthorized = useSelector((state) => state.user.isAuthorized);
-    const hasToken = useSelector((state) => state.user.hasToken);
+    const isAuthorized = useSelector((state) => state.auth.isAuthorized);
+    const hasToken = useSelector((state) => state.auth.hasToken);
     const userData = useSelector((state) => state.user.userData);
     const dispatch = useDispatch();
 

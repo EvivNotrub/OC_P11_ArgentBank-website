@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import LogInForm from '../../containers/Forms/LogInForm';
 
 function Authentification() {
-        const isAuthorized = useSelector((state) => state.user.isAuthorized);
+        const isAuthorized = useSelector((state) => state.auth.isAuthorized);
         const navigate = useNavigate();
 
         useEffect(() => {
