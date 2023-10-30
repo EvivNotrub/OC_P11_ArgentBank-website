@@ -32,19 +32,20 @@ function UserPage() {
             "balanceType": 'Current Balance',
         },
     ]
-    const getUserData = useCallback(
+
+
+    const dispatchUserData = useCallback(
         async () => {
-                const token = JSON.parse(localStorage.getItem("token"));
-                let response = await getUserProfile(token);
-                dispatch(setUserData(response.body));
-                dispatch(setUser(response.body.userName));
+        const response = await getUserProfile();
+        dispatch(setUserData(response.body));
+        dispatch(setUser(response.body.userName));
     }, [dispatch])
 
     useEffect(() => {
-        if(isAuthorized === true && hasToken === true){
-            getUserData();
+        if(isAuthorized && hasToken){
+            dispatchUserData();
         }
-    }, [getUserData, hasToken, isAuthorized])
+    }, [dispatchUserData, hasToken, isAuthorized])
 
     // here we force navigation to return to login if user is not authorized:
     const navigate = useNavigate();
@@ -63,27 +64,25 @@ function UserPage() {
                 <h2 className='user-main__alert'>Restricted access</h2>
                 <p className='user-main__alert'>You will be redirected to log-in page.</p>
             </main>
-        )}
-    if(isAuthorized === true) {
-        console.log("userData : ", userData);
-        return (
-            <main className="user-main">
-                <div className="user-main__header">
-                    <h2>Welcome back<br/>{userData ? userData.firstName : ''} {userData ? userData.lastName : ''}!</h2>
-                    <Button
-                            // handleAction={() =>  }
-                            type='button'
-                            textContent='Edit Name'/>
-                </div>
-                <div className="user-main__accounts">
-                    {accounts.map((account) => (
-                        <Account key={account.balance + account.accountName} name={account.accountName} balance={account.balance} balanceType={account.balanceType} className='user-main__accounts__account' />
-                    ))
-                    }
-                </div>
-            </main>
-        )
-    }
+        )}    
+    return (
+        <main className="user-main">
+            <div className="user-main__header">
+                <h2>Welcome back<br/>{userData ? userData.firstName : ''} {userData ? userData.lastName : ''}!</h2>
+                <Button
+                        // handleAction={() =>  }
+                        type='button'
+                        textContent='Edit Name'/>
+            </div>
+            <div className="user-main__accounts">
+                {accounts.map((account) => (
+                    <Account key={account.balance + account.accountName} name={account.accountName} balance={account.balance} balanceType={account.balanceType} className='user-main__accounts__account' />
+                ))
+                }
+            </div>
+        </main>
+    )
+
 }
 
 export default UserPage;

@@ -1,4 +1,5 @@
 
+
 export async function postCredentials(bodyData) {
         return await fetch('http://localhost:3001/api/v1/user/login', {
             method: 'POST',
@@ -7,7 +8,9 @@ export async function postCredentials(bodyData) {
         });
 }
 
-export async function getUserProfile(token) {
+export async function getUserProfile() {
+
+  const token = JSON.parse(localStorage.getItem("token"));
     try {
       const response = await fetch( 'http://localhost:3001/api/v1/user/profile', {
             method: "POST",

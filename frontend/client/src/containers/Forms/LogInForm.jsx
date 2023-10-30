@@ -59,19 +59,28 @@ function LogInForm() {
     )
 
 
-        return (
-            <form onSubmit={logInAction} className='form' id='log-in-form'>
-                <Field setValue={setMailInput} value={mailInput} inputClass='input' labelClass='label bold' labelText='User e-mail' type='email' inputName='email'/>
-                <Field setValue={setKeyInput} value={keyInput} inputClass='input' labelClass='label bold' labelText='Password' type= 'password' inputName= 'password'/>
-                <Field inputClass='form__remember' labelClass='label checkbox' labelTextAfter='Remember me' type='checkbox' id='rememberMe' inputName= 'rememberMe'/>
-                <Button
-                    className='form__submit'
-                    type='submit'
-                    form='log-in-form'
-                    textContent='Sign In'/>
-                {sending && <p>Sending !</p>}
-            </form>
-        )
+        if(!sending){
+            return (
+                <form onSubmit={logInAction} className='form' id='log-in-form'>
+                    <Field setValue={setMailInput} value={mailInput} inputClass='input' labelClass='label bold' labelText='User e-mail' type='email' inputName='email'/>
+                    <Field setValue={setKeyInput} value={keyInput} inputClass='input' labelClass='label bold' labelText='Password' type= 'password' inputName= 'password'/>
+                    <Field inputClass='form__remember' labelClass='label checkbox' labelTextAfter='Remember me' type='checkbox' id='rememberMe' inputName= 'rememberMe'/>
+                    <Button
+                        className='form__submit'
+                        type='submit'
+                        form='log-in-form'
+                        textContent='Sign In'/>
+                </form>
+            )
+        }
+        if(sending){
+            return (
+                <div className='loader'>
+                    <div className='loader__spinner'>
+                    </div>                   
+                </div>
+            )
+        }
 }
 
 export default LogInForm;

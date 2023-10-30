@@ -9,7 +9,7 @@ function Authentification() {
         const navigate = useNavigate();
 
         useEffect(() => {
-            if(isAuthorized === true){
+            if(isAuthorized){
                 navigate('/userpage', { replace: true });
             }
         }, [isAuthorized, navigate])
