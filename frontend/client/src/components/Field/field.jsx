@@ -14,6 +14,7 @@ function Field({...props}) {
                 name={props.inputName}
                 type={props.type}
                 value={props.value}
+                disabled={props.disabled}
             />
             {props.labelTextAfter}
         </label>
@@ -30,6 +31,7 @@ Field.propTypes = {
         type: PropTypes.string,
         inputName: PropTypes.string,
         id: PropTypes.string,
+        disabled: PropTypes.bool,
 }
 
 export default Field

@@ -1,15 +1,17 @@
 
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserData, setUser } from '../../Redux/userSlice';
 import { getUserProfile } from '../../api/api';
+import EditNameForm from '../../containers/Forms/EditNameForm';
 import Button from '../../components/buttons/buttons';
 import Account from '../../containers/account/Account';
 import './userPage.scss'
 
 
 function UserPage() {
+    const [edit, setEdit] = useState(false);
     const isAuthorized = useSelector((state) => state.auth.isAuthorized);
     const hasToken = useSelector((state) => state.auth.hasToken);
     const userData = useSelector((state) => state.user.userData);
@@ -32,7 +34,6 @@ function UserPage() {
             "balanceType": 'Current Balance',
         },
     ]
-
 
     const dispatchUserData = useCallback(
         async () => {
@@ -69,10 +70,15 @@ function UserPage() {
         <main className="user-main">
             <div className="user-main__header">
                 <h2>Welcome back<br/>{userData ? userData.firstName : ''} {userData ? userData.lastName : ''}!</h2>
-                <Button
-                        // handleAction={() =>  }
+                {edit?
+                    <EditNameForm setEdit={setEdit}/>
+                    :
+                    <Button
+                        handleAction={() => setEdit(true) }
                         type='button'
                         textContent='Edit Name'/>
+                }
+
             </div>
             <div className="user-main__accounts">
                 {accounts.map((account) => (
