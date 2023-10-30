@@ -40,13 +40,13 @@ function EditNameForm(props) {
     }, [userData])
 
     return (
-    <form onSubmit={(e) => changeUserName(e,userNameInput)} id='edit-name-form'>
-        <div className='user-main__header__edit'>
-            <Field setValue={setUserNameInput} value={userNameInput} inputClass='input' labelClass='label bold' labelText='User Name' type='text' inputName='userName'/>
-            {/* Below we need to create the api-routes to be able to change names
-                don't forget to delete disabled={true}*/}
-            <Field disabled={true} setValue={setFirstNameInput} value={firstNameInput} inputClass='input' labelClass='label bold' labelText='First Name' type='text' inputName='firstName'/>
-            <Field disabled={true} setValue={setLastNameInput} value={lastNameInput} inputClass='input' labelClass='label bold' labelText='Last Name' type='text' inputName='lastName'/>
+    <form className='user-edit' onSubmit={(e) => changeUserName(e,userNameInput)} id='edit-name-form'>
+        <Field setValue={setUserNameInput} value={userNameInput} inputClass='input' labelClass='label bold' labelText='User Name' type='text' inputName='userName'/>
+        {/* Below we need to create the api-routes to be able to change names
+            don't forget to delete disabled={true}*/}
+        <Field disabled={true} setValue={setFirstNameInput} value={firstNameInput} inputClass='input' labelClass='label bold' labelText='First Name' type='text' inputName='firstName'/>
+        <Field disabled={true} setValue={setLastNameInput} value={lastNameInput} inputClass='input' labelClass='label bold' labelText='Last Name' type='text' inputName='lastName'/>
+        <div className='user-edit__buttons'>
             <Button
                 form='edit-name-form'
                 type='submit'

@@ -8,11 +8,30 @@
         color: white;
     }
     &__header {
+        &.edit-form{
+            width: fit-content;
+            padding: 32px;
+            padding-top: 0;
+            margin: 32px auto;
+            color: var(--text-color, black);
+            background-color: var(--background, white);
+            & h2 {
+                margin: 32px auto;
+            }
+            @media screen and (max-width: 768px) {
+                width: 80%;
+                padding: 16px;
+                padding-top: 0;
+                & h2 {
+                    margin: 16px auto;
+                }
+            }
+        }
+        color: var(--text-color-dark, white);
         display: flex;
         flex-direction: column;
         align-items: center;
-        & h2 {
-            color: var(--text-color-dark, white);
+        & h2 {            
             font-size: 2rem;
         }
         & .button {

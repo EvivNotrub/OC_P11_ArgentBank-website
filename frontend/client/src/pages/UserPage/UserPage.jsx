@@ -54,7 +54,7 @@ function UserPage() {
         if(!isAuthorized){
             setTimeout(() => {
                 navigate('/authentification', { replace: true });
-            }, 2000)
+            }, 1300)
         }
     }, [isAuthorized, navigate])
 
@@ -68,18 +68,20 @@ function UserPage() {
         )}    
     return (
         <main className="user-main">
-            <div className="user-main__header">
-                <h2>Welcome back<br/>{userData ? userData.firstName : ''} {userData ? userData.lastName : ''}!</h2>
-                {edit?
+            {edit?
+                <div className="user-main__header edit-form">
+                    <h2>Edit user info</h2>
                     <EditNameForm setEdit={setEdit}/>
-                    :
+                </div>
+                :
+                <div className="user-main__header edit-button">
+                    <h2>Welcome back<br/>{userData ? userData.firstName : ''} {userData ? userData.lastName : ''}!</h2>
                     <Button
                         handleAction={() => setEdit(true) }
                         type='button'
                         textContent='Edit Name'/>
-                }
-
-            </div>
+                </div>  
+            }
             <div className="user-main__accounts">
                 {accounts.map((account) => (
                     <Account key={account.balance + account.accountName} name={account.accountName} balance={account.balance} balanceType={account.balanceType} className='user-main__accounts__account' />
