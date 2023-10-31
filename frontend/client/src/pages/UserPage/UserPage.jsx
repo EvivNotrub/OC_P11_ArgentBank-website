@@ -1,9 +1,7 @@
 
-import { useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { setUserData, setUser } from '../../Redux/userSlice';
-import { getUserProfile } from '../../api/api';
+import { useSelector } from 'react-redux';
 import Button from '../../components/buttons/buttons';
 import Account from '../../containers/account/Account';
 import './userPage.scss'
@@ -11,9 +9,9 @@ import './userPage.scss'
 
 function UserPage() {
     const isAuthorized = useSelector((state) => state.user.isAuthorized);
-    const hasToken = useSelector((state) => state.user.hasToken);
     const userData = useSelector((state) => state.user.userData);
-    const dispatch = useDispatch();
+    console.log('userData in UserPage: ', userData);
+    const navigate = useNavigate();
 
     const accounts = [
         {
@@ -33,22 +31,7 @@ function UserPage() {
         },
     ]
 
-
-    const dispatchUserData = useCallback(
-        async () => {
-        const response = await getUserProfile();
-        dispatch(setUserData(response.body));
-        dispatch(setUser(response.body.userName));
-    }, [dispatch])
-
-    useEffect(() => {
-        if(isAuthorized && hasToken){
-            dispatchUserData();
-        }
-    }, [dispatchUserData, hasToken, isAuthorized])
-
     // here we force navigation to return to login if user is not authorized:
-    const navigate = useNavigate();
     useEffect(() => {
         if(!isAuthorized){
             setTimeout(() => {

@@ -3,12 +3,14 @@
 import './navigation.scss';
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
-import { setAuthorized, setUser, setUserData, setValidToken } from '../../Redux/userSlice';
+import { setAuthorized, setUser, setUserData, setValidToken, setHasToken } from '../../Redux/userSlice';
 
 
 function Navigation() {
     const isAuthorized = useSelector((state) => state.user.isAuthorized);
     const hasToken = useSelector((state) => state.user.hasToken);
+    console.log('hasToken in Nav: ', hasToken);
+    const rememberMe = useSelector((state) => state.user.rememberMe);
     const userName = useSelector((state) => state.user.user);
     const dispatch = useDispatch();
 
@@ -17,9 +19,10 @@ function Navigation() {
         if(isAuthorized){
             dispatch(setAuthorized(false))
         }
-        if(hasToken){
+        if(hasToken && !rememberMe){
             window.localStorage.removeItem("token");
-            dispatch(setValidToken(false))
+            dispatch(setHasToken(false));
+            dispatch(setValidToken(false));
         }
         dispatch(setUser(null))
         dispatch(setUserData(null))
