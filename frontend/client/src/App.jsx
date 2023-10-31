@@ -17,8 +17,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="*" element={<Error />} />
           <Route path="/userpage" element={<UserPage />} />
-          <Route path="/authentification" element={<Authentification />} />
-          {/*<Route path="/apartment/:apartId" element={<Apartment />}  /> */}
+          <Route path="/authentification/:option" element={<Authentification />} />
       </Routes>
       <Footer/>
     </Router>

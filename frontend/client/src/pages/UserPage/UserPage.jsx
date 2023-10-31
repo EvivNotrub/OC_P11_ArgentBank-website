@@ -81,7 +81,7 @@ function UserPage() {
     useEffect(() => {
         if(!isAuthorized){
             setTimeout(() => {
-                navigate('/authentification', { replace: true });
+                navigate('/authentification/sign-in', { replace: true });
             }, 1300)
         }
     }, [isAuthorized, navigate])
