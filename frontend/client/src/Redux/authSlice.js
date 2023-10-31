@@ -5,9 +5,11 @@ import { postCredentials } from "../api/api";
 
 const initialState = {
     loading: 'idle',
-    auth: [],
+    // auth: [], // here we coud concider having a list of users and tokens
     isAuthorized: false,
     hasToken: false,
+    validToken: false,
+    rememberMe: false,
     error: "",
 };
 
@@ -34,15 +36,21 @@ const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        tokenAdded: (state, action) => {
-            state.auth.push(action.payload);
-        },
+        // tokenAdded: (state, action) => {
+        //     state.auth.push(action.payload);
+        // },
         hasTokenAction: (state, action) => {
             state.hasToken = action.payload;
         },
+        validTokenAction: (state, action) => {
+            state.validToken = action.payload;
+        },
         isAuthorizedAction: (state, action) => {
             state.isAuthorized = action.payload;
-        }
+        },
+        rememberMeAction: (state, action) => {
+            state.rememberMe = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -58,7 +66,6 @@ const authSlice = createSlice({
               state.loading === 'pending' &&
               state.currentRequestId === requestId
             ) {
-                // here i would like to add the token and user to the state where the user is the key and the token is the value
               state.loading = 'idle'
               const token = JSON.stringify(action.payload.body.token);
               window.localStorage.setItem("token", token)
@@ -80,7 +87,6 @@ const authSlice = createSlice({
               state.loading = 'idle'
               state.error = action.error
               state.currentRequestId = undefined
-              state.auth = []
               state.hasToken = false
               state.isAuthorized = false
             }
@@ -88,5 +94,5 @@ const authSlice = createSlice({
     },
 });
 
-export const { tokenAdded, hasTokenAction, isAuthorizedAction } = authSlice.actions;
+export const { hasTokenAction, isAuthorizedAction, rememberMeAction, validTokenAction } = authSlice.actions;
 export default authSlice.reducer;

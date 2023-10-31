@@ -1,19 +1,26 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-// import { unwrapResult } from '@reduxjs/toolkit'
-import { fetchAuth } from '../../Redux/authSlice';
+import { fetchAuth, rememberMeAction } from '../../Redux/authSlice';
 import Field from '../../components/Field/field';
 import Button from '../../components/buttons/buttons';
 import './loginForm.scss'
 
-function LogInForm() {
+function LogInForm({setDisabled, disabled}) {
     const [mailInput, setMailInput] = useState('');
-    const [keyInput, setKeyInput] = useState('')
+    const [keyInput, setKeyInput] = useState('');
     const isAuthorized = useSelector((state) => state.auth.isAuthorized);
+    const hasToken = useSelector((state) => state.auth.hasToken);
+    const rememberMe = useSelector((state) => state.auth.rememberMe);
     const loading = useSelector((state) => state.auth.loading);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-// need to check the dependencies of the callback : dispatch??
+    const handleRememberMeChange = () => {
+        dispatch(rememberMeAction(!rememberMe));
+      };
+
     const logInAction = useCallback(
         async (e) => {        
             e.preventDefault();
@@ -28,8 +35,17 @@ function LogInForm() {
             //     "email": e.target.email.value,
             //     "password": e.target.password.value
             // })
-
-            if(!isAuthorized){
+            if(!isAuthorized && rememberMe && hasToken){
+                // here we do not authorize the user directly, since userPage is
+                // not rendering and getting userData from the API without a valid token.
+                // It also allows the user to log out and change the rememberMe option
+                navigate('/userpage', { replace: true });
+            }
+            // below the || !rememberMe condition is necessary to avoid the user getting stuck
+            // after using the rememberMe option and then logging out
+            // we choose not to delete the token from localStorage in order to be able to
+            // re-check rememberMe option.
+            if(!isAuthorized && (!hasToken || !rememberMe)){
                 try {
                     await dispatch(fetchAuth(bodyData)).unwrap();
                 } catch (error) {
@@ -41,18 +57,53 @@ function LogInForm() {
                 }
             }
         },
-        [dispatch, isAuthorized, keyInput, mailInput]
+        [dispatch, hasToken, isAuthorized, keyInput, mailInput, navigate, rememberMe]
     )
+
+    useEffect(() => {
+        if(!isAuthorized && hasToken && rememberMe){
+            setDisabled(true);
+        }
+        if(!rememberMe){
+            setDisabled(false);
+        }
+    }, [hasToken, isAuthorized, rememberMe, setDisabled])
 
     if(loading === "idle" && !isAuthorized){
         return (
             <form onSubmit={logInAction} className='form' id='log-in-form'>
-                <Field setValue={setMailInput} value={mailInput} inputClass='input' labelClass='label bold' labelText='User e-mail' type='email' inputName='email'/>
-                <Field setValue={setKeyInput} value={keyInput} inputClass='input' labelClass='label bold' labelText='Password' type= 'password' inputName= 'password'/>
-                <Field inputClass='form__remember' labelClass='label checkbox' labelTextAfter='Remember me' type='checkbox' id='rememberMe' inputName= 'rememberMe'/>
+                <Field
+                    disabled={disabled}
+                    setValue={setMailInput}
+                    value={mailInput}
+                    inputClass='input'
+                    labelClass='label bold'
+                    labelText='User e-mail'
+                    type='email'
+                    inputName='email'/>
+                <Field
+                    disabled={disabled}
+                    setValue={setKeyInput}
+                    value={keyInput}
+                    inputClass='input'
+                    labelClass='label bold'
+                    labelText='Password'
+                    type= 'password'
+                    inputName= 'password'/>
+                <Field
+                    inputClass="form__remember"
+                    labelClass="label checkbox"
+                    labelTextAfter="Remember me"
+                    type="checkbox"
+                    id="rememberMe"
+                    inputName="rememberMe"
+                    setValue={handleRememberMeChange}
+                    checkbox={true}
+                    checked={rememberMe}
+                />
                 <Button
                     className='form__submit'
-                    type='submit'
+                    type={'submit'}
                     form='log-in-form'
                     textContent='Sign In'/>
             </form>
@@ -66,6 +117,11 @@ function LogInForm() {
             </div>
         )
     }
+}
+
+LogInForm.propTypes = {
+    setDisabled: PropTypes.func,
+    disabled: PropTypes.bool,
 }
 
 export default LogInForm;
