@@ -1,0 +1,527 @@
+swagger: '2.0'
+info:
+  title: Bank Argent API documentation
+  description: Contains all available API endpoints in this codebase
+  version: '1.0.0'
+  termsOfService: 'http://swagger.io/terms/'
+host: localhost:3001
+basePath: /api/v1
+schemes:
+  - http
+paths:
+  /user/login:
+    post:
+      tags:
+        - User Module
+      summary: Login
+      description: API for Login
+      parameters:
+        - in: body
+          name: body
+          description: Login Payload
+          required: true
+          schema:
+            $ref: '#/definitions/Login'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Login Successfully
+          schema:
+            $ref: '#/definitions/LoginResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/signup:
+    post:
+      tags:
+        - User Module
+      summary: Signup
+      description: API for Signup
+      parameters:
+        - in: body
+          name: body
+          description: Signup Payload
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Signup Successfully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/profile:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for fetching a user profile
+      #produces:
+       # - application/json
+      responses:
+        '200':
+          description: User profile retrieved successully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for updating a user profile
+      parameters:
+        - in: body
+          name: body
+          description: Update user profile attributes
+          required: true
+          schema:
+            $ref: '#/definitions/UserProfile'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User profile retrieved successully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/accounts:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - User Banking Module
+      summary: User Accounts API
+      description: API for fetching the accounts of a user
+      parameters:
+        - in: body
+          name: body
+          description: User Payload
+          required: true
+          schema:
+            $ref: '#/definitions/UserAccountsRequest'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User Accounts retrieved successully
+          schema:
+            $ref: '#/definitions/UserAccountsResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+  /user/accounts/{account_id}/transactions:
+    get:
+      security:
+        - Bearer: []
+      tags: 
+        - User Banking Module
+      summary: User's account transaction API
+      description: API for fetching a list of transactions for a specific account with possibilities to include a time-span indication
+      parameters:
+        - $ref: '#/parameters/AccountIdParam'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transactions retrieved successully. Returns a list of transactions for the account
+          schema:
+            $ref: '#/definitions/TransactionsResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /user/transactions/{transaction_id}:
+    put:
+      security:
+        - Bearer: []
+      tags: 
+        - User Banking Module
+      summary: Transaction edit API
+      description: API for editing notes and categories of a transaction
+      # consumes:
+      #   - "multipart/form-data"
+      parameters:
+        - $ref: '#/parameters/TransactionIdParam'
+        - in: body
+          name: body
+          description: Transaction change Payload
+          required: true
+          schema:
+            $ref: '#/definitions/TransactionDetailUpdate'
+        # - name: note
+        #   in: formData
+        #   description: Updated transaction note
+        #   type: string
+        # - name: categories
+        #   in: formData
+        #   description: Updated transaction categories (Array)
+        #   type: array
+        #   items:
+        #     type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transactions details updated successully. Returns transaction specific details
+          schema:
+            $ref: '#/definitions/Transaction'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /user/transactions/categories:
+    get:
+      security:
+        - Bearer: []
+      tags:
+       - User Banking Module
+      summary: User transaction-category list
+      description: API for fetching the transaction-category list of a user
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User transaction-categories retrieved successully
+          schema:
+            $ref: '#/definitions/UserCategoriesResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error   
+    put:
+      security:
+        - Bearer: []
+      tags:
+       - User Banking Module
+      summary: Update user transaction-category list
+      description: API for changes on the transaction-category list of a user. Only the strings, respective ID need to be treated in backend. If new -> assign id
+      parameters:
+        - in: body
+          name: body
+          description: category list Payload
+          required: true
+          schema:
+            $ref: '#/definitions/UserCategoriesUpdate'
+      responses:
+        '200':
+          description: User transaction-categories updated successully, return the new list of categories with matching id.
+          schema:
+            $ref: '#/definitions/UserCategoriesResponse'
+        '400':
+          description: Bad Request. Special message if it is not an array of objects.
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+parameters:
+  AccountIdParam:
+    name: account_id
+    in: path
+    description: A unique identifier used to identify the account resource.
+    required: true
+    type: string
+  TransactionIdParam:
+    name: transaction_id
+    in: path
+    description: A unique identifier used to identify the transaction resource.
+    required: true
+    type: string
+definitions:
+  User:
+    properties:
+      email:
+        type: string
+        description: user email
+      password:
+        type: string
+        description: user password
+      firstName:
+        type: string
+        description: user first name
+      lastName:
+        type: string
+        description: user last name
+      userName:
+        type: string
+        description: user public name
+  Login:
+    properties:
+      email:
+        type: string
+        description: user email
+      password:
+        type: string
+        description: user password
+  ApiResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          id:
+            type: string
+          email:
+            type: string
+  LoginResponse:
+    type: object
+    properties:
+      token:
+        type: string
+  UserProfile:
+    type: object
+    properties:
+      userName:
+        type: string
+  UserAccountsResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          data:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                balance:
+                  $ref: '#/definitions/Balance'
+  UserCategoriesUpdate:
+    type: array
+    items:
+      type: object
+      properties:
+        category:
+          type: string
+        group:
+          type: string
+  UserCategoriesResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+            category:
+              type: string
+            group:
+              type: string
+  UserAccountsRequest:
+    type: object
+    properties:
+      id:
+        description: user specific ID in case of multiple user per authorisation.
+        type: integer
+      userName:
+        type: string
+  TransactionsResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+        description: Status code indicating the result of the request.
+      message:
+        type: string
+        description: A message providing additional information about the request result.
+      body:
+        type: object
+        properties:
+          time-span:
+            type: object
+            properties:
+              start-date:
+                type: string
+                format: date-time
+                description: Start date of the time span.
+              end-date:
+                type: string
+                format: date-time
+                description: End date of the time span.
+          data:
+            type: object
+            properties:
+              user-id:
+                type: string
+                description: user specific ID in case of multiple user per authorisation.
+              transactions:
+                type: array
+                items:
+                  $ref: '#/definitions/Transaction'
+    required:
+      - status
+      - message
+      - body
+  Transaction:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Transaction ID.
+      account-id:
+        type: string
+        description: transaction specific account ID.
+      date:
+        type: object
+        properties:
+          orderDate:
+            type: string
+            format: date-time
+          validationDate:
+            type: string
+            format: date-time
+            description: Transaction date and time.
+      description:
+        type: string
+        description: short transaction description or title.
+      amount:
+        $ref: '#/definitions/AmountAndCurrency'
+      creditDebitIndicator:
+        type: string
+        enum:
+          - Credit
+          - Debit
+        description: |-
+          Indicates whether the balance is a credit or a debit balance. 
+      type:
+        type: string
+      categories:
+        $ref: '#/definitions/TransactionCategoryItem'
+      note:
+        type: string
+      transactionRelatedBalance:
+        type: object
+        description: balance of the transaction-specific account before and after the validation.
+        properties: 
+          oldBalance:
+            $ref: '#/definitions/Balance' 
+          new_balance:
+            $ref: '#/definitions/Balance'
+  AccountId:
+    description: >-
+      A unique and immutable identifier used to identify the account resource.
+    type: string
+    minLength: 1
+    maxLength: 40
+  Balance:
+    type: object
+    properties:
+      account-id:
+        $ref: '#/definitions/AccountId'
+      amount:
+        $ref: '#/definitions/AmountAndCurrency'
+      dateTime:
+        description: Date and time of the balance amount record.
+        type: string
+        format: date-time
+      balanceType:
+        description: 'Type of the balance, to be listed by Bank'
+        type: string
+        enum:
+          - Available Balance
+          - Current Balance
+  AmountAndCurrency:
+    type: object
+    properties:
+      amount:
+        $ref: '#/definitions/Amount'
+      currency:
+        $ref: '#/definitions/Currency'
+    required:
+      - amount
+      - currency
+    additionalProperties: false
+  Currency:
+    type: string
+    pattern: '^[A-Z]{3,3}$'
+  Amount:
+    type: string
+    pattern: '^\d{1,13}\.\d{1,5}$'
+  TransactionCategoryItem:
+    description: a list of categories specific to the transaction
+    type: array
+    items:
+      type: object
+      properties: 
+        id:
+          type: integer
+        category:
+          type: string
+        group:
+          type: string
+  TransactionDetailUpdate:
+    type: object
+    properties:
+      updateType:
+        # type: string
+        # enum:
+        #   - note
+        #   - categories
+        #   - both
+        type: object
+        properties:
+          categories:
+            type: boolean
+          note:
+            type: boolean
+      note:
+        type: string
+      categories:
+        $ref: '#/definitions/TransactionCategoryItem'
+    required:
+     - updateType
+    minProperties: 1
