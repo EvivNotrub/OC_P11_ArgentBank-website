@@ -106,9 +106,9 @@ paths:
       security:
         - Bearer: []
       tags:
-        - User Banking Module
+        - Banking Module
       summary: User Accounts API
-      description: API for fetching the accounts of a user
+      description: API for fetching the accounts of a user and basic details.
       parameters:
         - in: body
           name: body
@@ -136,9 +136,9 @@ paths:
       security:
         - Bearer: []
       tags: 
-        - User Banking Module
+          - Banking Module
       summary: User's account transaction API
-      description: API for fetching a list of transactions for a specific account with possibilities to include a time-span indication
+      description: API for fetching a list of transactions for a specific account with possibilities to include a time-span indication.
       parameters:
         - $ref: '#/parameters/AccountIdParam'
       produces:
@@ -152,6 +152,8 @@ paths:
           description: Bad Request
         '401':
           description: Unauthorized
+        '404':
+          description: Account Not Found
         '500':
           description: Internal Server Error
   /user/transactions/{transaction_id}:
@@ -159,9 +161,9 @@ paths:
       security:
         - Bearer: []
       tags: 
-        - User Banking Module
+        - Banking Module
       summary: Transaction edit API
-      description: API for editing notes and categories of a transaction
+      description: API for editing notes and categories of a transaction. The categories list/note should replace the old one or be created. Can be an empty array/string.
       # consumes:
       #   - "multipart/form-data"
       parameters:
@@ -193,6 +195,8 @@ paths:
           description: Bad Request
         '401':
           description: Unauthorized
+        '404':
+          description: Transaction Not Found
         '500':
           description: Internal Server Error
   /user/transactions/categories:
@@ -200,7 +204,7 @@ paths:
       security:
         - Bearer: []
       tags:
-       - User Banking Module
+       - Banking Module
       summary: User transaction-category list
       description: API for fetching the transaction-category list of a user
       produces:
@@ -222,9 +226,9 @@ paths:
       security:
         - Bearer: []
       tags:
-       - User Banking Module
+       - Banking Module
       summary: Update user transaction-category list
-      description: API for changes on the transaction-category list of a user. Only the strings, respective ID need to be treated in backend. If new -> assign id
+      description: API for changes on the transaction-specific category-list of a user. Only the strings, respective ID need to be treated in backend. If new -> assign id.
       parameters:
         - in: body
           name: body
@@ -343,6 +347,8 @@ definitions:
           type: string
         group:
           type: string
+      required:
+        - category
   UserCategoriesResponse:
     type: object
     properties:
@@ -506,22 +512,8 @@ definitions:
   TransactionDetailUpdate:
     type: object
     properties:
-      updateType:
-        # type: string
-        # enum:
-        #   - note
-        #   - categories
-        #   - both
-        type: object
-        properties:
-          categories:
-            type: boolean
-          note:
-            type: boolean
       note:
         type: string
       categories:
-        $ref: '#/definitions/TransactionCategoryItem'
-    required:
-     - updateType
+        $ref: '#/definitions/UserCategoriesUpdate'
     minProperties: 1
