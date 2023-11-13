@@ -20,6 +20,7 @@ function UserPage() {
     const userData = useSelector((state) => state.user.userData);
     const dispatch = useDispatch();
 
+    // here we set the accounts data, in a real app it would be fetched from the API
     const accounts = [
         {
             "accountName": 'Argent Bank Checking (x8349)',
