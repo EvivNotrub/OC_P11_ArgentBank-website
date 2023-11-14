@@ -5,7 +5,6 @@ import { postCredentials } from "../api/api";
 
 const initialState = {
     loading: 'idle',
-    // auth: [], // here we coud concider having a list of users and tokens
     isAuthorized: false,
     hasToken: false,
     validToken: false,
@@ -36,9 +35,6 @@ const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        // tokenAdded: (state, action) => {
-        //     state.auth.push(action.payload);
-        // },
         hasTokenAction: (state, action) => {
             state.hasToken = action.payload;
         },
@@ -75,7 +71,6 @@ const authSlice = createSlice({
               state.isAuthorized = true
               state.currentRequestId = undefined
               state.error = ''
-
             }
         })
         .addCase(fetchAuth.rejected, (state, action) => {
