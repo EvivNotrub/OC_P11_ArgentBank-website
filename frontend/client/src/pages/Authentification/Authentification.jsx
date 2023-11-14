@@ -14,7 +14,7 @@ function Authentification() {
     const rememberMe = useSelector((state) => state.auth.rememberMe);
     const userName = useSelector((state) => state.user.user);
 
-    // isAuthorized is set to true if the user sends the valid credentials,
+    // isAuthorized is set to true if the user sends the valid credentials after valid api response,
     // or if a previously saved token is validated by the API.
     // The second case is managed in UserPage.jsx and there fore LogInForm.jsx
     // navigates to UserPage.jsx if hasToken is true, but userData is not yet present.

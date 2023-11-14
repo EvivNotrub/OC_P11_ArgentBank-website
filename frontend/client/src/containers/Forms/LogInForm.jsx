@@ -59,7 +59,7 @@ function LogInForm({setDisabled, disabled}) {
         },
         [dispatch, hasToken, isAuthorized, keyInput, mailInput, navigate, rememberMe]
     )
-
+    // below we disable the fields depending on remeberMe option
     useEffect(() => {
         if(!isAuthorized && hasToken && rememberMe){
             setDisabled(true);
