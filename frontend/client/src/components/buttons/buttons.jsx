@@ -5,6 +5,7 @@ function Button({...props}){
 
     return(
         <button
+            onClick={props.handleAction}
             className={'button' + ' ' + props.className}
             form={props.form?props.form:''}
             type={props.type}

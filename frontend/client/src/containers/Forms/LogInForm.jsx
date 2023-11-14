@@ -1,24 +1,29 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { setAuthorized, setValidToken } from '../../Redux/userSlice';
-import { postCredentials } from '../../api/api';
+import { fetchAuth, rememberMeAction } from '../../Redux/authSlice';
 import Field from '../../components/Field/field';
 import Button from '../../components/buttons/buttons';
 import './loginForm.scss'
 
-function LogInForm() {
+function LogInForm({setDisabled, disabled}) {
     const [mailInput, setMailInput] = useState('');
-    const [keyInput, setKeyInput] = useState('')
-    const [sending, setSending] = useState(false);
-    const isAuthorized = useSelector((state) => state.user.isAuthorized)
+    const [keyInput, setKeyInput] = useState('');
+    const isAuthorized = useSelector((state) => state.auth.isAuthorized);
+    const hasToken = useSelector((state) => state.auth.hasToken);
+    const rememberMe = useSelector((state) => state.auth.rememberMe);
+    const loading = useSelector((state) => state.auth.loading);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-// need to check the dependencies of the callback : dispatch??
+    const handleRememberMeChange = () => {
+        dispatch(rememberMeAction(!rememberMe));
+      };
+
     const logInAction = useCallback(
         async (e) => {        
-        
             e.preventDefault();
-
             const email = mailInput;
             const key = keyInput;
             const userInfo = {
@@ -26,61 +31,97 @@ function LogInForm() {
                 "password": key
             }
             const bodyData = JSON.stringify(userInfo)
-
-            setSending(true)
-
-            if(!isAuthorized){
+            // const bodyData2 = JSON.stringify({
+            //     "email": e.target.email.value,
+            //     "password": e.target.password.value
+            // })
+            if(!isAuthorized && rememberMe && hasToken){
+                // here we do not authorize the user directly, since userPage is
+                // not rendering and getting userData from the API without a valid token.
+                // It also allows the user to log out and change the rememberMe option
+                navigate('/userpage', { replace: true });
+            }
+            // below the || !rememberMe condition is necessary to avoid the user getting stuck
+            // after using the rememberMe option and then logging out
+            // we choose not to delete the token from localStorage in order to be able to
+            // re-check rememberMe option.
+            if(!isAuthorized && (!hasToken || !rememberMe)){
                 try {
-                    let response = await postCredentials(bodyData)
-                    setSending(false)
-                    if(!response.ok){
-                        alert("HTTP-Error: " + response.status + "\n\n" + "Identifiants incorrect");
-                        dispatch(setAuthorized(false))
-                    }
-                    const contentType = response.headers.get("content-type")
-                    if(!contentType || !contentType.includes("application/json")){
-                        throw new TypeError("Did not received Json!")
-                    }
-                    if(response.status === 200) {
-                        dispatch(setAuthorized(true))
-                        const retourLogin = await response.json();
-                        const token = JSON.stringify(retourLogin.body.token);
-                        window.localStorage.setItem("token", token)
-                        dispatch(setValidToken(true))
-                    }
+                    await dispatch(fetchAuth(bodyData)).unwrap();
                 } catch (error) {
-                    setSending(false)
-                    alert('Erreur lors de la connexion au server.')
-                    throw new Error('Could not reach backend', {cause: error});
+                    if (error.status === 404) {
+                        alert("HTTP-Error: " + error.status + "\n\n Could not reach backend: " + error.statusText);
+                    }else {
+                        alert("HTTP-Error: " + error.status + "\n\n" + error.message);
+                    }
                 }
             }
         },
-        [dispatch, isAuthorized, keyInput, mailInput]
+        [dispatch, hasToken, isAuthorized, keyInput, mailInput, navigate, rememberMe]
     )
-
-
-        if(!sending){
-            return (
-                <form onSubmit={logInAction} className='form' id='log-in-form'>
-                    <Field setValue={setMailInput} value={mailInput} inputClass='input' labelClass='label bold' labelText='User e-mail' type='email' inputName='email'/>
-                    <Field setValue={setKeyInput} value={keyInput} inputClass='input' labelClass='label bold' labelText='Password' type= 'password' inputName= 'password'/>
-                    <Field inputClass='form__remember' labelClass='label checkbox' labelTextAfter='Remember me' type='checkbox' id='rememberMe' inputName= 'rememberMe'/>
-                    <Button
-                        className='form__submit'
-                        type='submit'
-                        form='log-in-form'
-                        textContent='Sign In'/>
-                </form>
-            )
+    // below we disable the fields depending on remeberMe option
+    useEffect(() => {
+        if(!isAuthorized && hasToken && rememberMe){
+            setDisabled(true);
         }
-        if(sending){
-            return (
-                <div className='loader'>
-                    <div className='loader__spinner'>
-                    </div>                   
-                </div>
-            )
+        if(!rememberMe){
+            setDisabled(false);
         }
+    }, [hasToken, isAuthorized, rememberMe, setDisabled])
+
+    if(loading === "idle" && !isAuthorized){
+        return (
+            <form onSubmit={logInAction} className='form' id='log-in-form'>
+                <Field
+                    disabled={disabled}
+                    setValue={setMailInput}
+                    value={mailInput}
+                    inputClass='input'
+                    labelClass='label bold'
+                    labelText='User e-mail'
+                    type='email'
+                    inputName='email'/>
+                <Field
+                    disabled={disabled}
+                    setValue={setKeyInput}
+                    value={keyInput}
+                    inputClass='input'
+                    labelClass='label bold'
+                    labelText='Password'
+                    type= 'password'
+                    inputName= 'password'/>
+                <Field
+                    inputClass="form__remember"
+                    labelClass="label checkbox"
+                    labelTextAfter="Remember me"
+                    type="checkbox"
+                    id="rememberMe"
+                    inputName="rememberMe"
+                    setValue={handleRememberMeChange}
+                    checkbox={true}
+                    checked={rememberMe}
+                />
+                <Button
+                    className='form__submit'
+                    type={'submit'}
+                    form='log-in-form'
+                    textContent='Sign In'/>
+            </form>
+        )
+    }
+    if(loading === "pending"){
+        return (
+            <div className='loader'>
+                <div className='loader__spinner'>
+                </div>                   
+            </div>
+        )
+    }
+}
+
+LogInForm.propTypes = {
+    setDisabled: PropTypes.func,
+    disabled: PropTypes.bool,
 }
 
 export default LogInForm;

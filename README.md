@@ -37,6 +37,10 @@ npm run dev:server
 
 # Populate database with two users
 npm run populate-db
+
+# Frontend
+# make sure you are in the right folder (cd frontend cd client)
+npm run dev
 ```
 
 Your server should now be running at http://locahost:3001 and you will now have two users in your MongoDB database!
@@ -58,6 +62,23 @@ Once you run the `populate-db` script, you should have two users in your databas
 - Last Name: `Rogers`,
 - Email: `steve@rogers.com`,
 - Password: `password456`
+
+// add through api:
+###  Loki Laufeyson
+
+- First Name: `Loki`
+- Last Name: `Laufeyson`
+- Email: `loki@laufeyson.com`
+- Password: `654drowssap`
+- User Name: `Cooper`
+
+###  Stephen  Strange
+
+- First Name: `Stephen`
+- Last Name: `Strange`
+- Email: `stephen@strange.com`
+- Password: `1p2a3s4s5w`
+- User Name: `Vincent`
 
 ## API Documentation
 

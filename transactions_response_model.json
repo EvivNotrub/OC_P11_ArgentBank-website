@@ -1,0 +1,93 @@
+[
+{
+  "status": 0,
+  "message": "string",
+  "body": {
+    "account-id": "string",
+    "start-date": "2022-03-01T00:00:00Z",
+    "end-date": "2022-03-01T00:00:00Z",
+    "transactions": [
+        {
+          "id": 0,
+          "date": "2022-03-01T00:00:00Z",
+          "description": "string",
+          "currency": "string",
+          "amount": 0,
+          "type": "string",
+          "category": "string",
+          "note": "string",
+          "old_balance": 0,
+          "new_balance": 0
+        },
+        {
+          "id": 0,
+          "date": "2022-03-01T00:00:00Z",
+          "description": "string",
+          "currency": "string",
+          "amount": 0,
+          "type": "string",
+          "category": "string",
+          "note": "string",
+          "old_balance": 0,
+          "new_balance": 0
+        }
+      ]
+  }
+},
+{
+  "status": 0,
+  "message": "string",
+  "body": {
+    "time-span":{
+        "start-date": "2022-03-01T00:00:00Z",
+        "end-date": "2022-03-01T00:00:00Z"
+    },
+    "data": {
+      "account-id": "string",
+      "transactions": [
+        {
+          "id": 0,
+          "account-id": "string",
+          "date": "2022-03-01T00:00:00Z",
+          "description": "string",
+          "currency": "string",
+          "amount": 0,
+          "type": "string",
+          "categories": [
+            {
+                "id": 0,
+                "name": "string",
+                "group": "string"
+            },
+            {
+                "id": 0,
+                "name": "string",
+                "group": "string"
+            }
+          ],
+          "note": "string",
+          "old_balance": 0,
+          "new_balance": 0
+        },
+        {
+          "id": 0,
+          "account-id": "string",
+          "date": "2022-03-01T00:00:00Z",
+          "description": "string",
+          "currency": "string",
+          "amount": 0,
+          "type": "string",
+          "category": "string",
+          "note": "string",
+          "old_balance": 0,
+          "new_balance": 0
+        }
+      ]
+    }
+  }
+}
+]
+
+
+
+
