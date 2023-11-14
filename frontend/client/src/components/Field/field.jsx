@@ -18,16 +18,17 @@ function Field({...props}) {
                     checked={props.checked}
                 />
                  : 
-                 <input
-                 onChange={(e) => setInputValue(e.target.value)}
-                 className={props.inputClass}
-                 id={props.id}
-                 name={props.inputName}
-                 type={props.type}
-                 value={props.value}
-                 disabled={props.disabled}
-                 checked={props.checked}
-             />
+                <input
+                    onChange={(e) => setInputValue(e.target.value)}
+                    className={props.inputClass}
+                    id={props.id}
+                    name={props.inputName}
+                    type={props.type}
+                    value={props.value}
+                    disabled={props.disabled}
+                    checked={props.checked}
+                    required={props.required}
+                />
             }
                 
             {props.labelTextAfter}
@@ -36,6 +37,7 @@ function Field({...props}) {
 }
 
 Field.propTypes = {
+    required: PropTypes.bool,
     checkbox: PropTypes.bool,
     checked: PropTypes.bool,
     setValue: PropTypes.func,

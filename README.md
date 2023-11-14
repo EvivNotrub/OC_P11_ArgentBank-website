@@ -80,6 +80,14 @@ Once you run the `populate-db` script, you should have two users in your databas
 - Password: `1p2a3s4s5w`
 - User Name: `Vincent`
 
+### Lemmy Kilmister
+
+- First Name: `Lemmy`
+- Last Name: `Kilmister`
+- Email: `lemmy@kilmister.com`
+- Password: `overkill666`
+- User Name: `Orgasmatron`
+
 ## API Documentation
 
 To learn more about how the API works, once you have started your local environment, you can visit: http://localhost:3001/api-docs

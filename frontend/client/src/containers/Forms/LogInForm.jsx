@@ -26,6 +26,10 @@ function LogInForm({setDisabled, disabled}) {
             e.preventDefault();
             const email = mailInput;
             const key = keyInput;
+            if(!rememberMe && keyInput.length < 8){
+                alert("Password must be at least 8 characters long");
+                return;
+            }
             const userInfo = {
                 "email": email,
                 "password": key
@@ -80,7 +84,9 @@ function LogInForm({setDisabled, disabled}) {
                     labelClass='label bold'
                     labelText='User e-mail'
                     type='email'
-                    inputName='email'/>
+                    inputName='email'
+                    required={true}
+                />
                 <Field
                     disabled={disabled}
                     setValue={setKeyInput}
@@ -89,7 +95,9 @@ function LogInForm({setDisabled, disabled}) {
                     labelClass='label bold'
                     labelText='Password'
                     type= 'password'
-                    inputName= 'password'/>
+                    inputName= 'password'
+                    required={true}
+                />
                 <Field
                     inputClass="form__remember"
                     labelClass="label checkbox"

@@ -1,10 +1,6 @@
 
 import { useState, useCallback, useEffect } from 'react';
-// import { useState, useCallback, useEffect } from 'react';
-
 import { useNavigate } from 'react-router-dom';
-// import PropTypes from 'prop-types';
-// import { useSelector, useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { postNewUser } from '../../api/api';
 import Field from '../../components/Field/field';
@@ -20,40 +16,29 @@ function SignUpForm() {
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
 
-
-    // const isAuthorized = useSelector((state) => state.auth.isAuthorized);
-    // const hasToken = useSelector((state) => state.auth.hasToken);
-    // const rememberMe = useSelector((state) => state.auth.rememberMe);
     const loading = useSelector((state) => state.auth.loading);
-    // const dispatch = useDispatch();
-    // const navigate = useNavigate();
 
     const signInAction = useCallback(
         async (e) => {        
             e.preventDefault();
-            // const email = mailInput;
-            // const key = keyInput;
-            // const userInfo = {
-            //     "email": email,
-            //     "password": key
-            // }
-            // const bodyData = JSON.stringify(userInfo)
-            // console.log("bodyData", bodyData);
-            const bodyData2 = JSON.stringify({
-                "email": e.target.email.value,
-                "password": e.target.password.value,
-                "firstName": e.target.firstName.value,
-                "lastName": e.target.lastName.value,
-                "userName": e.target.userName.value
-            })
-            console.log("bodyData2", bodyData2);
-            const response = await postNewUser(bodyData2);
-            console.log("response", response);
+            if(keyInput.length < 8){
+                alert("Password must be at least 8 characters long");
+                return;
+            }
+            const userInfo = {
+                "email": mailInput,
+                "password": keyInput,
+                "firstName": firstName,
+                "lastName": lastName,
+                "userName": userName
+            }
+            const bodyData = JSON.stringify(userInfo)
+            const response = await postNewUser(bodyData);
             if(response.status === 200){
                 setValidResponse(true);
             }
         },
-        []
+        [firstName, keyInput, lastName, mailInput, userName]
     )
 
     useEffect(() => {
@@ -72,7 +57,8 @@ function SignUpForm() {
                     labelClass='label bold'
                     labelText='Your e-mail'
                     type='email'
-                    inputName='email'/>
+                    inputName='email'
+                    required={true} />
                 <Field
                     setValue={setKeyInput}
                     value={keyInput}
@@ -80,7 +66,8 @@ function SignUpForm() {
                     labelClass='label bold'
                     labelText='Password'
                     type='password'
-                    inputName= 'password'/>
+                    inputName= 'password'
+                    required={true}/>
                 <Field
                     inputClass="input"
                     labelClass="label bold"
@@ -90,6 +77,7 @@ function SignUpForm() {
                     inputName="firstName"
                     setValue={setFirstName}
                     value={firstName}
+                    required={true}
                 />
                 <Field
                     inputClass="input"
@@ -100,6 +88,7 @@ function SignUpForm() {
                     inputName="lastName"
                     setValue={setLastName}
                     value={lastName}
+                    required={true}
                 />
                 <Field
                     inputClass="input"
@@ -110,6 +99,7 @@ function SignUpForm() {
                     inputName="userName"
                     setValue={setUserName}
                     value={userName}
+                    required={true}
                 />                
                 <Button
                     className='form__submit'
@@ -128,10 +118,5 @@ function SignUpForm() {
         )
     }
 }
-
-// SignInForm.propTypes = {
-//     setDisabled: PropTypes.func,
-//     disabled: PropTypes.bool,
-// }
 
 export default SignUpForm;
