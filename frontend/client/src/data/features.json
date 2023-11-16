@@ -4,19 +4,25 @@
     {
         "id": "354thn3f54h",
         "title": "You are our #1 priority",
-        "icon": "../src/assets/images/icon-chat.png",
+        "icon": "../src/assets/images/icon-chat/icon-chat.webp",
+        "iconSizes": "100px",
+        "iconSrcSet": "../src/assets/images/icon-chat/icon-chat-small.webp 448w, ../src/assets/images/icon-chat/icon-chat-x-small.webp 304w, ../src/assets/images/icon-chat/icon-chat-xx-small.webp 150w",
         "description": "Need to talk to a representative? You can get in touch through our 24/7 chat or through a phone call in less than 5 minutes."
     },
     {
         "id": "43s57gsfgs3f",
         "title": "More savings means higher rates",
-        "icon": "../src/assets/images/icon-money.png",
+        "icon": "../src/assets/images/icon-money/icon-money.webp",
+        "iconSizes": "100px",
+        "iconSrcSet": "../src/assets/images/icon-money/icon-money-small.webp 448w, ../src/assets/images/icon-money/icon-money-x-small.webp 304w, ../src/assets/images/icon-money/icon-money-xx-small.webp 150w",
         "description": "The more you save with us, the higher your interest rate will be!"
     },
     {
         "id": "3s4fd3gsh4s",
         "title": "Security you can trust",
-        "icon": "../src/assets/images/icon-security.png",
+        "icon": "../src/assets/images/icon-security/icon-security.webp",
+        "iconSizes": "100px",
+        "iconSrcSet": "../src/assets/images/icon-security/icon-security-small.webp 448w, ../src/assets/images/icon-security/icon-security-x-small.webp 304w, ../src/assets/images/icon-security/icon-security-xx-small.webp 150w",
         "description": "We use top of the line encryption to make sure your data and money is always safe."
     }
 ]

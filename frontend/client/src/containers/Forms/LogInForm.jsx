@@ -18,7 +18,6 @@ function LogInForm({setDisabled, disabled}) {
     const loading = useSelector((state) => state.auth.loading);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    console.log('newLogIn', newLogIn);
     const handleRememberMeChange = () => {
         dispatch(rememberMeAction(!rememberMe));
       };
