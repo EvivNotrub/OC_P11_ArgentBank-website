@@ -13,9 +13,7 @@ function Navigation() {
     const hasToken = useSelector((state) => state.auth.hasToken);
     // const validToken = useSelector((state) => state.auth.validToken);
     const rememberMe = useSelector((state) => state.auth.rememberMe);
-    console.log("rememberMe", rememberMe);
     const userName = useSelector((state) => state.user.user);
-    console.log("userName", userName);
     const dispatch = useDispatch();
 
 

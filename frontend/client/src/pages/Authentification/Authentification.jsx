@@ -7,7 +7,6 @@ import SignUpForm from '../../containers/Forms/signUpForm';
 
 function Authentification() {
     const { option } = useParams();
-    console.log("option", option);
     const [disabled, setDisabled] = useState(false);
     const navigate = useNavigate();
     const isAuthorized = useSelector((state) => state.auth.isAuthorized);

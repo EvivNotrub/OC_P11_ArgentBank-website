@@ -2,12 +2,14 @@ import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchAuth, rememberMeAction } from '../../Redux/authSlice';
+import { fetchAuth, hasTokenAction, rememberMeAction } from '../../Redux/authSlice';
+import { setUser, setUserData } from '../../Redux/userSlice';
 import Field from '../../components/Field/field';
 import Button from '../../components/buttons/buttons';
 import './loginForm.scss'
 
 function LogInForm({setDisabled, disabled}) {
+    const [newLogIn, setNewLogIn] = useState(true);
     const [mailInput, setMailInput] = useState('');
     const [keyInput, setKeyInput] = useState('');
     const isAuthorized = useSelector((state) => state.auth.isAuthorized);
@@ -16,20 +18,40 @@ function LogInForm({setDisabled, disabled}) {
     const loading = useSelector((state) => state.auth.loading);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    console.log('newLogIn', newLogIn);
     const handleRememberMeChange = () => {
         dispatch(rememberMeAction(!rememberMe));
       };
+    const handleNewLogInOption = () => {
+        setNewLogIn(true);
+    };
+    const handleRememberedOption = () => {
+        setNewLogIn(false);
+    };
 
+    useEffect(() => {
+        if(hasToken){
+            setNewLogIn(false);
+        }
+    }, [hasToken])
+
+    // below we disable the fields depending on remeberMe option
+    useEffect(() => {
+        if(!newLogIn){
+            setDisabled(true);
+            setMailInput('');
+            setKeyInput('');
+        }
+        if(newLogIn) {
+            setDisabled(false);
+        }
+    }, [hasToken, newLogIn, setDisabled])
+        
     const logInAction = useCallback(
         async (e) => {        
             e.preventDefault();
             const email = mailInput;
             const key = keyInput;
-            if(!rememberMe && keyInput.length < 8){
-                alert("Password must be at least 8 characters long");
-                return;
-            }
             const userInfo = {
                 "email": email,
                 "password": key
@@ -39,7 +61,17 @@ function LogInForm({setDisabled, disabled}) {
             //     "email": e.target.email.value,
             //     "password": e.target.password.value
             // })
-            if(!isAuthorized && rememberMe && hasToken){
+            if(newLogIn && hasToken){
+                window.localStorage.removeItem("token");
+                dispatch(hasTokenAction(false));
+                dispatch(setUser(null))
+                dispatch(setUserData(null))
+            }
+            if(newLogIn && keyInput.length < 8){
+                alert("Password must be at least 8 characters long");
+                return;
+            }
+            if(!isAuthorized && !newLogIn && hasToken){
                 // here we do not authorize the user directly, since userPage is
                 // not rendering and getting userData from the API without a valid token.
                 // It also allows the user to log out and change the rememberMe option
@@ -49,7 +81,7 @@ function LogInForm({setDisabled, disabled}) {
             // after using the rememberMe option and then logging out
             // we choose not to delete the token from localStorage in order to be able to
             // re-check rememberMe option.
-            if(!isAuthorized && (!hasToken || !rememberMe)){
+            if(!isAuthorized && newLogIn){
                 try {
                     await dispatch(fetchAuth(bodyData)).unwrap();
                 } catch (error) {
@@ -61,17 +93,8 @@ function LogInForm({setDisabled, disabled}) {
                 }
             }
         },
-        [dispatch, hasToken, isAuthorized, keyInput, mailInput, navigate, rememberMe]
+        [dispatch, hasToken, isAuthorized, keyInput, mailInput, navigate, newLogIn]
     )
-    // below we disable the fields depending on remeberMe option
-    useEffect(() => {
-        if(!isAuthorized && hasToken && rememberMe){
-            setDisabled(true);
-        }
-        if(!rememberMe){
-            setDisabled(false);
-        }
-    }, [hasToken, isAuthorized, rememberMe, setDisabled])
 
     if(loading === "idle" && !isAuthorized){
         return (
@@ -109,6 +132,32 @@ function LogInForm({setDisabled, disabled}) {
                     checkbox={true}
                     checked={rememberMe}
                 />
+                {hasToken && 
+                    <div>
+                        <Field
+                            inputClass="form__remember"
+                            labelClass="label checkbox"
+                            labelTextAfter="Previous Log-In"
+                            type="radio"
+                            id="rememberedLogIn"
+                            inputName="newLogInOrNot"
+                            setValue={handleRememberedOption}
+                            checkbox={false}
+                            value={!newLogIn}
+                            checked={!newLogIn}
+                        />
+                        <Field
+                            inputClass="form__remember"
+                            labelClass="label checkbox"
+                            labelTextAfter="New Log-In"
+                            type="radio"
+                            id="newLogIn"
+                            inputName="newLogInOrNot"
+                            setValue={handleNewLogInOption}
+                            checkbox={false}
+                            value={newLogIn}
+                        />
+                    </div>}
                 <Button
                     className='form__submit'
                     type={'submit'}

@@ -62,6 +62,13 @@ function UserPage() {
     }, [dispatch, hasToken, rememberMe])
 
 
+    // here the previously validated token from a 200 response will controle authorization: 
+    useEffect(() => {
+        if(validToken){
+            dispatch(isAuthorizedAction(true));
+        }
+    }, [dispatch, validToken])
+
     // here we get the user data from the API if the token is present.
     // TWO WAYS hasToken can be true:
     // the loginForm using the fetchAuth (in authSlice) wif api response 200
@@ -86,13 +93,6 @@ function UserPage() {
             }, 1300)
         }
     }, [isAuthorized, navigate])
-
-    // here the previously validated token from a 200 response will controle authorization: 
-    useEffect(() => {
-        if(validToken){
-            dispatch(isAuthorizedAction(true));
-        }
-    }, [dispatch, validToken])
 
     // here it is important to check if the token has been removed from localStorage
     // and set to notValid since it controls the authorization.

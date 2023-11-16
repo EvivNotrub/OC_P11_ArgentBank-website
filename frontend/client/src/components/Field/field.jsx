@@ -37,6 +37,7 @@ function Field({...props}) {
 }
 
 Field.propTypes = {
+    radio: PropTypes.bool,
     required: PropTypes.bool,
     checkbox: PropTypes.bool,
     checked: PropTypes.bool,
