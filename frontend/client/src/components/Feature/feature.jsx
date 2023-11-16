@@ -1,15 +1,45 @@
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 import "./feature.scss"
 
 function Feature({content}) {
+
+    const [imageCdnSrc, setLogoSrc] = useState(content.iconCDN);
+    const [cdnError, setCdnError] = useState(false);
+
+    useEffect(() => {
+        async function fetchLogo() {
+                const response = await fetch(content.iconCDN)
+                if(response.ok) {
+                    setLogoSrc(response.url);
+                    setCdnError(false);
+                    return;
+                }
+                if(!response.ok) {
+                    setCdnError(true);
+                    return;
+                }
+        }
+        fetchLogo();
+    }
+    ,[content.iconCDN])
+
+    useEffect(() => {
+        if(cdnError) {
+            setLogoSrc(content.icon);
+        }
+        if(!cdnError) {
+            setLogoSrc(imageCdnSrc);
+        }
+    }, [cdnError, content.icon, imageCdnSrc])
 
     return (
         <article key={content.id} className="feature">
             <img
                 className='feature__icon'
-                src={content.icon}
-                sizes={content.iconSizes}
-                srcSet={content.iconSrcSet}
+                src={imageCdnSrc}
+                sizes={cdnError ? "" : content.iconSizes}
+                srcSet={cdnError ? "" : content.iconSrcSet}
                 alt="icon messages"
                 loading='lazy'
             />
@@ -26,7 +56,8 @@ Feature.propTypes = {
         icon: PropTypes.string,
         iconSizes: PropTypes.string,
         iconSrcSet: PropTypes.string,
-        description: PropTypes.string
+        description: PropTypes.string,
+        iconCDN: PropTypes.string,
     }),
 };
 
