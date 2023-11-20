@@ -41,7 +41,7 @@ function Header() {
             <Link className='header__logo' to="/">
                 <img
                     src={logoCdnSrc}
-                    sizes={cdnError ? "" : '144px'}
+                    sizes={cdnError ? "" : '(min-width: 440px) 198px, 165px'}
                     srcSet={cdnError ? "" : "https://cdn.jsdelivr.net/gh/EvivNotrub/OC_P11_ArgentBank-website@main/frontend/client/src/assets/images/argentBankLogo/argentBankLogo-small.webp 448w, https://cdn.jsdelivr.net/gh/EvivNotrub/OC_P11_ArgentBank-website@main/frontend/client/src/assets/images/argentBankLogo/argentBankLogo-x-small.webp 304w, https://cdn.jsdelivr.net/gh/EvivNotrub/OC_P11_ArgentBank-website@main/frontend/client/src/assets/images/argentBankLogo/argentBankLogo-xx-small.webp 150w"}
                     alt="Argent Bank Logo"
                 />
