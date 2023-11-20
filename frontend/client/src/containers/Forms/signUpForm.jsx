@@ -1,7 +1,9 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { hasTokenAction, rememberMeAction } from '../../Redux/authSlice';
+import { setUser, setUserData } from '../../Redux/userSlice';
 import { postNewUser } from '../../api/api';
 import Field from '../../components/Field/field';
 import Button from '../../components/buttons/buttons';
@@ -14,6 +16,9 @@ function SignUpForm() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [userName, setUserName] = useState('');
+    const rememberMe = useSelector((state) => state.auth.rememberMe);
+    const hasToken = useSelector((state) => state.auth.hasToken);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const loading = useSelector((state) => state.auth.loading);
@@ -25,6 +30,12 @@ function SignUpForm() {
                 alert("Password must be at least 8 characters long");
                 return;
             }
+            if(rememberMe || hasToken){
+                dispatch(rememberMeAction(false));
+                dispatch(hasTokenAction(false));
+                dispatch(setUser(null))
+                dispatch(setUserData(null))
+            }
             const userInfo = {
                 "email": mailInput,
                 "password": keyInput,
@@ -34,11 +45,15 @@ function SignUpForm() {
             }
             const bodyData = JSON.stringify(userInfo)
             const response = await postNewUser(bodyData);
+            console.log("response   ", response);
             if(response.status === 200){
                 setValidResponse(true);
             }
+            if(response.status !== 200){
+                alert(response)
+            }
         },
-        [firstName, keyInput, lastName, mailInput, userName]
+        [dispatch, firstName, keyInput, lastName, mailInput, rememberMe, userName]
     )
 
     useEffect(() => {

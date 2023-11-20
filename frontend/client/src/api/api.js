@@ -74,6 +74,6 @@ export async function postNewUser(bodyData){
         return responseJson
       }
   } catch (error) {
-    throw new Error('Could not reach backend', {cause: error});
+    return error.message
   }
 }
