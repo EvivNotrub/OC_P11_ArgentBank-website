@@ -1,5 +1,17 @@
 # Argent Bank API
 
+Project 11 during the Open Classroom cursus. It was meant practice more React, to discover Redux and global state-management, and use swagger as a tool to write comprehensive API endpoints and specifications. Design was not meant to be important but rather implementation of the desired features.
+Original design as a template for the project can be seen in /designs
+To start: 
+-	start the server (instruction below) 
+-	go to frontend/client and: npm run dev
+
+## Original repository:
+
+https://github.com/OpenClassrooms-Student-Center/Debuggez-une-application-React.JS
+
+## Old Readme below:
+
 This codebase contains the code needed to run the backend for Argent Bank.
 
 ## Getting Started
