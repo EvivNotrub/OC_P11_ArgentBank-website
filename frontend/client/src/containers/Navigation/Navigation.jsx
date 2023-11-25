@@ -1,7 +1,7 @@
 
 
 import './navigation.scss';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser, setUserData } from '../../Redux/userSlice';
 import { hasTokenAction, isAuthorizedAction } from '../../Redux/authSlice';
@@ -15,7 +15,7 @@ function Navigation() {
     const rememberMe = useSelector((state) => state.auth.rememberMe);
     const userName = useSelector((state) => state.user.user);
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
 
     function logOut(e) {
         e.preventDefault();
@@ -30,6 +30,7 @@ function Navigation() {
         }
         dispatch(setUser(null))
         dispatch(setUserData(null))
+        navigate('/', { replace: true });
     }
     const signUp = 'sign-up';
     const signIn = 'sign-in';
