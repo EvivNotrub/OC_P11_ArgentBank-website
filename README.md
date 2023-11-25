@@ -75,38 +75,6 @@ Once you run the `populate-db` script, you should have two users in your databas
 - Email: `steve@rogers.com`,
 - Password: `password456`
 
-// add through api:
-###  Loki Laufeyson
-
-- First Name: `Loki`
-- Last Name: `Laufeyson`
-- Email: `loki@laufeyson.com`
-- Password: `654drowssap`
-- User Name: `Cooper`
-
-###  Stephen  Strange
-
-- First Name: `Stephen`
-- Last Name: `Strange`
-- Email: `stephen@strange.com`
-- Password: `1p2a3s4s5w`
-- User Name: `Vincent`
-
-### Lemmy Kilmister
-
-- First Name: `Lemmy`
-- Last Name: `Kilmister`
-- Email: `lemmy@kilmister.com`
-- Password: `overkill666`
-- User Name: `Orgasmatron`
-
-### Sophie Bluel
-
-- First Name: `Sophie`
-- Last Name: `Bluel`
-- Email: `sophie.bluel@test.tld`
-- Password: `phylosophie101`
-- User Name: `Soso`
 
 ## API Documentation
 
