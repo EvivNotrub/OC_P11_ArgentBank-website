@@ -21,13 +21,14 @@ function EditNameForm(props) {
     async function changeUserName(e, name) {
         e.preventDefault();
         const response = await putUserInfo(name);
-        console.log(response);
-        // dispatch(setUser(name)); to be developped to treat response from server
         setEdit(false);
         if(response.status === 200) {
             alert(response.message + '\nUser name changed to ' + name);
             dispatch(setUser(response.body.userName));
             dispatch(setUserData(response.body));
+        }
+        if(!response.status){
+            alert(response);
         }
     }
 

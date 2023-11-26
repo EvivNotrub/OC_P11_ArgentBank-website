@@ -27,6 +27,7 @@ function Authentification() {
             dispatch(validTokenAction(true));
         }
         if(response.status !== 200){
+            console.log('response', response);
             // validToken is set to false, the user will be redirected to login page
             // Important to change hasToken as well since this function is called only if hasToken is true
             window.localStorage.removeItem("token");
@@ -37,7 +38,7 @@ function Authentification() {
             dispatch(setUser(null));
             dispatch(setUserData(null));
             dispatch(rememberMeAction(false));
-            alert("Your token is not valid anymore. \nPlease log in again.");
+            alert(`${response}\n\nYou will be redirected to login page.`);
         }
         dispatch(setUserData(response.body));
         dispatch(setUser(response.body.userName));

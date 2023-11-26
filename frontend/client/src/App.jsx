@@ -10,17 +10,18 @@ import Home from './pages/Home/Home.jsx';
 import Header from './containers/Header/Header.jsx';
 import Footer from './containers/Footer/Footer.jsx';
 import './App.scss';
+import { getToken } from './helpers/localStorage.js';
 
 function App() {
     // TODO: manage the problem with the token arriving before hastoken
+    // TODO_ add useMemo
     const hasToken = useSelector((state) => state.auth.hasToken);
-    console.log('hasToken', hasToken);
-    const token = window.sessionStorage.getItem('token') || window.localStorage.getItem('token');
+    const token = getToken();
+    console.log('token', token);
     const dispatch = useDispatch();
 
     useEffect(() => {
         if(token && !hasToken){
-            console.log('token is present and detected in home', token, "\nhasToken", hasToken);
             dispatch(hasTokenAction(true));
         }
     }, [dispatch, hasToken, token])

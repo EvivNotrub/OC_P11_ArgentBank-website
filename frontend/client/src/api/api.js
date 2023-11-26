@@ -1,4 +1,4 @@
-
+import { getToken } from "../helpers/localStorage";
 
 export async function postCredentials(bodyData) {
         return await fetch('http://localhost:3001/api/v1/user/login', {
@@ -9,16 +9,26 @@ export async function postCredentials(bodyData) {
 }
 
 export async function getUserProfile() {
-  const localToken = window.sessionStorage.getItem('token') || window.localStorage.getItem('token');
-  const token = JSON.parse(localToken);
+
     try {
       const response = await fetch( 'http://localhost:3001/api/v1/user/profile', {
             method: "POST",
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${getToken()}`
             },
       });
-      if (!response.ok) throw new Error(`Backend responded with ${response.status} error: ${await response.text()}`);
+      if (!response.ok){
+        if(response.status === 404){
+          throw new Error(`Backend responded with ${response.status} error: ${response.statusText}`)
+        }
+        if(response.status === 500){
+          throw new Error(`Backend responded with ${response.status} error: Server error`)
+        }
+        if(response.status === 401){
+          throw new Error(`Backend responded with ${response.status} error:\nUnauthorized!\nToken is not valid or has expired.\n\nPlease login again!`)
+        }
+        throw new Error(`Backend responded with ${response.status} error: ${await response.text()}`);
+      }
       const contentType = response.headers.get("content-type")
       if(!contentType || !contentType.includes("application/json")){
         throw new TypeError("Did not received Json!")
@@ -28,22 +38,32 @@ export async function getUserProfile() {
         return responseJson
         }
     } catch (error) {
-      throw new Error('Could not reach backend', {cause: error});
+      return error
     }
   }
 
 export async function putUserInfo(userName) {
-  const token = JSON.parse(localStorage.getItem("token"));
   try {
     const response = await fetch( 'http://localhost:3001/api/v1/user/profile', {
           method: "PUT",
           headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${getToken()}`,
               "Content-Type": "application/json"
           },
           body: JSON.stringify({userName})
     });
-    if (!response.ok) throw new Error(`Backend responded with ${response.status} error: ${await response.text()}`);
+    if (!response.ok){
+      if(response.status === 404){
+        throw new Error(`Backend responded with ${response.status} error: ${response.statusText}`)
+      }
+      if(response.status === 500){
+        throw new Error(`Backend responded with ${response.status} error: Server error`)
+      }
+      if(response.status === 401){
+        throw new Error(`Backend responded with ${response.status} error:\nUnauthorized!\nToken is not valid or has expired.\n\nPlease login again!`)
+      }
+      throw new Error(`Backend responded with ${response.status} error: ${await response.text()}`);
+    }
     const contentType = response.headers.get("content-type")
     if(!contentType || !contentType.includes("application/json")){
       throw new TypeError("Did not received Json!")
@@ -53,7 +73,7 @@ export async function putUserInfo(userName) {
       return responseJson
       }
   } catch (error) {
-    throw new Error('Could not reach backend', {cause: error});
+    return error
   }
 }
 

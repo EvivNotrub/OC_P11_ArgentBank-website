@@ -41,10 +41,14 @@ function LogInForm() {
             try {
                 await dispatch(fetchAuth(bodyData)).unwrap();
             } catch (error) {
-                if (error.status === 404) {
-                    alert("HTTP-Error: " + error.status + "\n\n Could not reach backend: " + error.statusText);
+                if(error.status){
+                    if (error.status === 404) {
+                        alert("HTTP-Error: " + error.status + "\n\n Could not reach backend: " + error.statusText);
+                        return;
+                    }
+                    alert(error.status + " " + error.message)
                 }else {
-                    alert("HTTP-Error: " + error.status + "\n\n" + error.message);
+                    alert("HTTP-Error: " + error.name + "\n\n" + error.message);
                 }
             }
         },

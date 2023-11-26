@@ -1,8 +1,6 @@
-# React + Vite
+# RememberMe
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Token is set to be valid for 1 minute, can be changed in .\src\Redux\authSlice.js when using setLocalWithExpiry(key, value, ttl)
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+

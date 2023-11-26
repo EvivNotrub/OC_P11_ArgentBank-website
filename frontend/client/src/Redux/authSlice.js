@@ -2,6 +2,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { postCredentials } from "../api/api";
+import { setLocalWithExpiry } from "../helpers/localStorage";
 
 const initialState = {
     loading: 'idle',
@@ -63,15 +64,15 @@ const authSlice = createSlice({
               state.currentRequestId === requestId
             ) {
               state.loading = 'idle'
-              const token = JSON.stringify(action.payload.body.token);
+              const rawToken = action.payload.body.token;
             //   TODO: manage user as well
-            // TODO: manage timeout for token
+            // TODO: hasToken change to Token?
                 if (state.rememberMe) {
-                    window.localStorage.setItem("token", token)
+                    setLocalWithExpiry("token", rawToken, 60000)
                 } else {
-                    window.sessionStorage.setItem("token", token)
+                    window.sessionStorage.setItem("token", JSON.stringify(rawToken))
                 }
-              if (token) {
+              if (rawToken) {
                 state.hasToken = true
               }
               state.isAuthorized = true
