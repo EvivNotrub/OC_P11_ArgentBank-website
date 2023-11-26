@@ -4,30 +4,24 @@ import './navigation.scss';
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser, setUserData } from '../../Redux/userSlice';
-import { hasTokenAction, isAuthorizedAction } from '../../Redux/authSlice';
+import { hasTokenAction, isAuthorizedAction, rememberMeAction, validTokenAction } from '../../Redux/authSlice';
 // import { useEffect } from 'react';
 
 
 function Navigation() {
     const isAuthorized = useSelector((state) => state.auth.isAuthorized);
-    const hasToken = useSelector((state) => state.auth.hasToken);
-    // const validToken = useSelector((state) => state.auth.validToken);
-    const rememberMe = useSelector((state) => state.auth.rememberMe);
     const userName = useSelector((state) => state.user.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     function logOut(e) {
         e.preventDefault();
-        // we only remove isAuthorized from Redux store to be able to control rememberMe
-        if(isAuthorized){
-            dispatch(isAuthorizedAction(false))
-        }
-        // we remove token from localStorage only if rememberMe is false
-        if(hasToken && !rememberMe){
-            window.localStorage.removeItem("token");
-            dispatch(hasTokenAction(false))
-        }
+        dispatch(isAuthorizedAction(false))
+        window.localStorage.removeItem("token");
+        window.sessionStorage.removeItem("token");
+        dispatch(hasTokenAction(false))
+        dispatch(validTokenAction(false))
+        dispatch(rememberMeAction(false))
         dispatch(setUser(null))
         dispatch(setUserData(null))
         navigate('/', { replace: true });

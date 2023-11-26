@@ -9,8 +9,8 @@ export async function postCredentials(bodyData) {
 }
 
 export async function getUserProfile() {
-
-  const token = JSON.parse(localStorage.getItem("token"));
+  const localToken = window.sessionStorage.getItem('token') || window.localStorage.getItem('token');
+  const token = JSON.parse(localToken);
     try {
       const response = await fetch( 'http://localhost:3001/api/v1/user/profile', {
             method: "POST",
