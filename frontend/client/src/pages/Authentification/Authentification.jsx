@@ -1,27 +1,75 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import LogInForm from '../../containers/Forms/LogInForm';
 import './authentification.scss'
 import SignUpForm from '../../containers/Forms/signUpForm';
+import { getUserProfile } from '../../api/api';
+import { setUserData, setUser } from '../../Redux/userSlice';
+import { validTokenAction, hasTokenAction, isAuthorizedAction, rememberMeAction } from '../../Redux/authSlice';
+
 
 function Authentification() {
+
+    const hasToken = useSelector((state) => state.auth.hasToken);
+    const validToken = useSelector((state) => state.auth.validToken);
     const { option } = useParams();
-    const [disabled, setDisabled] = useState(false);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const isAuthorized = useSelector((state) => state.auth.isAuthorized);
-    const rememberMe = useSelector((state) => state.auth.rememberMe);
     const userName = useSelector((state) => state.user.user);
+
+    const dispatchUserData = useCallback(
+        async () => {
+        const response = await getUserProfile();
+        //here we only set validToken=true if the API response is ok:
+        if(response.status === 200){
+            dispatch(validTokenAction(true));
+        }
+        if(response.status !== 200){
+            // validToken is set to false, the user will be redirected to login page
+            // Important to change hasToken as well since this function is called only if hasToken is true
+            window.localStorage.removeItem("token");
+            window.sessionStorage.removeItem("token");
+            dispatch(validTokenAction(false));
+            dispatch(hasTokenAction(false));
+            dispatch(isAuthorizedAction(false));
+            dispatch(setUser(null));
+            dispatch(setUserData(null));
+            dispatch(rememberMeAction(false));
+            alert("Your token is not valid anymore. \nPlease log in again.");
+        }
+        dispatch(setUserData(response.body));
+        dispatch(setUser(response.body.userName));
+    }, [dispatch])
+
+
+    // here the previously validated token from a 200 response will controle authorization: 
+    useEffect(() => {
+        if(validToken){
+            dispatch(isAuthorizedAction(true));
+        }
+    }, [dispatch, validToken])
+
+    
+    // here we get the user data from the API if the token is present.
+    // TWO WAYS hasToken can be true:
+    // the loginForm using the fetchAuth (in authSlice) wif api response 200
+    // or the user has checked rememberMe previously and the token is still present.
+    // rememberMe is set to true if the user checks the checkbox in the LogInFOrm component.
+    useEffect(() => {
+        if(hasToken){
+            dispatchUserData();
+        }
+    }, [dispatch, dispatchUserData, hasToken])
 
     // isAuthorized is set to true if the user sends the valid credentials after valid api response,
     // or if a previously saved token is validated by the API.
-    // The second case is managed in UserPage.jsx and there fore LogInForm.jsx
-    // navigates to UserPage.jsx if hasToken is true, but userData is not yet present.
-        useEffect(() => {
-            if(isAuthorized){
-                navigate('/userpage', { replace: true });
-            }
-        }, [isAuthorized, navigate, rememberMe])
+    useEffect(() => {
+        if(isAuthorized){
+            navigate('/userpage', { replace: true });
+        }
+    }, [isAuthorized, navigate])
 
         return (
             <main className="log-in-main">
@@ -33,11 +81,11 @@ function Authentification() {
                         </svg>
                         <h2 className='log-in__heading__title'>
                             {
-                               (option === 'sign-up') ? ('Sign-Up') : (disabled ? `Welcome ${userName || ''}` : 'Sign In')
+                               (option === 'sign-up') ? ('Sign-Up') : (userName ? `Welcome ${userName}` : 'Sign In')
                             }
                         </h2>
                     </div>
-                    {(option === 'sign-in') && <LogInForm setDisabled={setDisabled} disabled={disabled} />}
+                    {(option === 'sign-in') && <LogInForm />}
                     {(option === 'sign-up') && <SignUpForm />}
                 </section>
             </main>

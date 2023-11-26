@@ -64,7 +64,13 @@ const authSlice = createSlice({
             ) {
               state.loading = 'idle'
               const token = JSON.stringify(action.payload.body.token);
-              window.localStorage.setItem("token", token)
+            //   TODO: manage user as well
+            // TODO: manage timeout for token
+                if (state.rememberMe) {
+                    window.localStorage.setItem("token", token)
+                } else {
+                    window.sessionStorage.setItem("token", token)
+                }
               if (token) {
                 state.hasToken = true
               }
