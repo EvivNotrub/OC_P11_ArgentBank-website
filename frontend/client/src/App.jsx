@@ -13,11 +13,8 @@ import './App.scss';
 import { getToken } from './helpers/localStorage.js';
 
 function App() {
-    // TODO: manage the problem with the token arriving before hastoken
-    // TODO_ add useMemo
     const hasToken = useSelector((state) => state.auth.hasToken);
     const token = getToken();
-    console.log('token', token);
     const dispatch = useDispatch();
 
     useEffect(() => {

@@ -65,8 +65,7 @@ const authSlice = createSlice({
             ) {
               state.loading = 'idle'
               const rawToken = action.payload.body.token;
-            //   TODO: manage user as well
-            // TODO: hasToken change to Token?
+            //   TODO: manage user as well ?
                 if (state.rememberMe) {
                     setLocalWithExpiry("token", rawToken, 60000)
                 } else {
