@@ -10,6 +10,13 @@ To start:
 
 https://github.com/OpenClassrooms-Student-Center/Debuggez-une-application-React.JS
 
+## About the swagger files:
+
+- swagger.yaml was present from the start from the original repository.
+- swagger_phase_2_v3.yaml is the last version after some final advice by the Mentor.
+- swagger_phase_2_v2.yaml was my final proposition with a category list for transactions after Mentor's advice.
+- swagger_phase_2_v1.yaml was my first approach using PUT instead of DELETE and POST in order to have less routes.
+
 ## Old Readme below:
 
 This codebase contains the code needed to run the backend for Argent Bank.
